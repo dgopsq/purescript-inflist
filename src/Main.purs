@@ -1,7 +1,6 @@
 module Main where
 
 import Prelude
-
 import App.Pages.Home (mkHome)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
@@ -16,8 +15,7 @@ main :: Effect Unit
 main = do
   root <- getElementById "root" =<< (map toNonElementParentNode $ document =<< window)
   case root of
-    Nothing ->
-      throw "Root element not found."
-    Just r  -> do
+    Nothing -> throw "Root element not found."
+    Just r -> do
       home <- mkHome
       render (home unit) r
