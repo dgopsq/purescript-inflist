@@ -7,13 +7,13 @@ import React.Basic.DOM.Events (capture_)
 import React.Basic.Hooks (Component, component, useState, (/\))
 import React.Basic.Hooks as React
 
-type HomeProps = Unit
+type Props = Unit
 
-mkHome :: Component HomeProps
+mkHome :: Component Props
 mkHome = do
-  component "Home" \_props -> React.do
+  component "Home" \_ -> React.do
 
-    counter /\ setCounter <- useState 0
+    counter /\ setCounter <- useState true
 
     pure $ DOM.div
       { children:
@@ -21,7 +21,7 @@ mkHome = do
           , DOM.p_ [ DOM.text "Try clicking the button!" ]
           , DOM.button
               { onClick: capture_ do
-                  setCounter (_ + 1)
+                  setCounter $ not
               , children:
                   [ DOM.text "Clicks: "
                   , DOM.text (show counter)
