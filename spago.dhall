@@ -14,10 +14,19 @@ to generate this file without the comments in this block.
 , dependencies =
   [ "console"
   , "effect"
+  , "exceptions"
+  , "foldable-traversable"
+  , "maybe"
+  , "partial"
   , "prelude"
   , "psci-support"
+  , "react-basic"
   , "react-basic-dom"
   , "react-basic-hooks"
+  , "routing"
+  , "transformers"
+  , "web-dom"
+  , "web-html"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
