@@ -1,19 +1,18 @@
-module Main
-  ( main
-  ) where
+module Main where
 
 import Prelude
 import App.Pages.About (mkAbout)
 import App.Pages.Home (mkHome)
+import App.State.Helpers (mkDispatchContext, mkStateContext, mkStateProvider)
 import AppEnv (AppComponent, appComponent)
-import Control.Monad.Reader as Reader
+import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (throw)
 import React.Basic.DOM (render)
 import React.Basic.DOM as R
+import React.Basic.Hooks (fragment)
 import React.Basic.Hooks as React
-import React.Basic.Hooks as React.Basic
 import Routes (AppRoute(..))
 import Routes.Helpers (mkRouterContext, mkRouterProvider, useRouterContext)
 import Web.DOM.NonElementParentNode (getElementById)
@@ -28,23 +27,26 @@ main = do
     Nothing -> throw "Root element not found."
     Just r -> do
       routerContext <- mkRouterContext
+      stateContext <- mkStateContext
+      dispatchContext <- mkDispatchContext
       let
-        env = { routerContext }
-      routerProvider <- Reader.runReaderT mkRouterProvider env
-      app <- Reader.runReaderT mkApp env
-      render (routerProvider [ app unit ]) r
+        env = { routerContext, stateContext, dispatchContext }
+      routerProvider <- runReaderT mkRouterProvider env
+      stateProvider <- runReaderT mkStateProvider env
+      app <- runReaderT mkApp env
+      render (routerProvider [ stateProvider [ app unit ] ]) r
 
 -- | The main application component
 -- | managing all the internal routes.
 mkApp :: AppComponent Unit
 mkApp = do
-  { routerContext } <- Reader.ask
+  { routerContext } <- ask
   home <- mkHome
   about <- mkAbout
   appComponent "App" \_ -> React.do
     { route } <- useRouterContext routerContext
     pure do
-      React.Basic.fragment
+      fragment
         [ case route of
             Just Home -> home unit
             Just About -> about unit

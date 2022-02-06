@@ -1,6 +1,7 @@
 module AppEnv where
 
 import Prelude
+import App.State.RootReducer (StateContext, DispatchContext)
 import Control.Monad.Reader (ReaderT(..))
 import Effect (Effect)
 import React.Basic (JSX)
@@ -11,6 +12,8 @@ import Routes (RouterContext)
 -- | The Record used for the DI.
 type AppEnv
   = { routerContext :: RouterContext
+    , stateContext :: StateContext
+    , dispatchContext :: DispatchContext
     }
 
 -- | Wrap the default `React.Basic.Hooks.Component` using the
