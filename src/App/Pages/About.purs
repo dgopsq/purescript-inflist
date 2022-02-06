@@ -7,11 +7,11 @@ import React.Basic.DOM as DOM
 
 mkAbout :: AppComponent Unit
 mkAbout = do
-  homeLink <- mkLink "/"
+  link <- mkLink
   appComponent "About" \_ -> React.do
     pure
       $ DOM.div_
           [ DOM.h1_ [ DOM.text "About" ]
           , DOM.div_
-              [ homeLink unit ]
+              [ link { route: "/", text: "Home" } ]
           ]

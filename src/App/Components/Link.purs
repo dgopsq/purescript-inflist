@@ -9,11 +9,11 @@ import React.Basic.Hooks as React
 import React.Basic.DOM.Events (capture_)
 import Routes.Helpers (useRouterContext)
 
-mkLink :: String -> AppComponent Unit
-mkLink routeName = do
+mkLink :: AppComponent { route :: String, text :: String }
+mkLink = do
   { routerContext } <- ask
-  appComponent "Link" \_ -> React.do
+  appComponent "Link" \{ route, text } -> React.do
     { nav } <- useRouterContext routerContext
     let
-      handlePress = capture_ $ nav.pushState (unsafeToForeign {}) routeName
-    pure $ DOM.a { href: "#", onClick: handlePress, children: [ DOM.text routeName ] }
+      handlePress = capture_ $ nav.pushState (unsafeToForeign {}) route
+    pure $ DOM.a { href: "#", onClick: handlePress, children: [ DOM.text text ] }

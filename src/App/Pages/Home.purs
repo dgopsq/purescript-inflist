@@ -10,14 +10,14 @@ import React.Basic.Hooks as React
 
 mkHome :: AppComponent Unit
 mkHome = do
-  aboutLink <- mkLink "/about"
+  link <- mkLink
   appComponent "Home" \_ -> React.do
     counter /\ setCounter <- useState true
     pure
       $ DOM.div_
           [ DOM.h1_ [ DOM.text "Home" ]
           , DOM.div_
-              [ aboutLink unit ]
+              [ link { route: "/about", text: "About" } ]
           , DOM.p_ [ DOM.text "Try clicking the button!" ]
           , DOM.button
               { onClick:
