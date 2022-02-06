@@ -1,7 +1,7 @@
-module App.State.Helpers where
+module State.Helpers where
 
 import Prelude
-import App.State.RootReducer (StateContext, DispatchContext, rootInitialState, rootReducer)
+import State.RootReducer (StateContext, DispatchContext, rootInitialState, rootReducer)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
 import Effect (Effect)

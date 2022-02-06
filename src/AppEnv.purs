@@ -1,7 +1,7 @@
 module AppEnv where
 
 import Prelude
-import App.State.RootReducer (StateContext, DispatchContext)
+import State.RootReducer (StateContext, DispatchContext)
 import Control.Monad.Reader (ReaderT(..))
 import Effect (Effect)
 import React.Basic (JSX)

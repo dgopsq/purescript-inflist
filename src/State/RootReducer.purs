@@ -1,4 +1,4 @@
-module App.State.RootReducer where
+module State.RootReducer where
 
 import Prelude
 import Effect (Effect)

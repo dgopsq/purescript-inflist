@@ -3,7 +3,7 @@ module Main where
 import Prelude
 import App.Pages.About (mkAbout)
 import App.Pages.Home (mkHome)
-import App.State.Helpers (mkDispatchContext, mkStateContext, mkStateProvider)
+import State.Helpers (mkDispatchContext, mkStateContext, mkStateProvider)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))

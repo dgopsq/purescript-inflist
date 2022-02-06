@@ -2,7 +2,7 @@ module App.Pages.Home where
 
 import Prelude
 import App.Components.Link (mkLink)
-import App.State.RootReducer (RootAction(..))
+import State.RootReducer (RootAction(..))
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import React.Basic.DOM as DOM
