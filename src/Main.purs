@@ -3,6 +3,7 @@ module Main
   ) where
 
 import Prelude
+import App.Pages.About (mkAbout)
 import App.Pages.Home (mkHome)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader as Reader
@@ -39,12 +40,13 @@ mkApp :: AppComponent Unit
 mkApp = do
   { routerContext } <- Reader.ask
   home <- mkHome
+  about <- mkAbout
   appComponent "App" \_ -> React.do
     { route } <- useRouterContext routerContext
     pure do
       React.Basic.fragment
         [ case route of
             Just Home -> home unit
-            Just About -> R.h1_ [ R.text "About" ]
+            Just About -> about unit
             Nothing -> R.div_ [ R.text "-" ]
         ]
