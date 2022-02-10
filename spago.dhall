@@ -18,6 +18,7 @@ to generate this file without the comments in this block.
   , "foldable-traversable"
   , "foreign"
   , "maybe"
+  , "newtype"
   , "partial"
   , "prelude"
   , "psci-support"
@@ -26,6 +27,7 @@ to generate this file without the comments in this block.
   , "react-basic-hooks"
   , "routing"
   , "transformers"
+  , "variant"
   , "web-dom"
   , "web-html"
   ]

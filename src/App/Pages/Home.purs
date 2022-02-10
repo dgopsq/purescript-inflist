@@ -2,23 +2,24 @@ module App.Pages.Home where
 
 import Prelude
 import App.Components.Link (mkLink)
-import State.RootReducer (RootAction(..))
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import React.Basic.DOM as DOM
 import React.Basic.DOM.Events (capture_)
 import React.Basic.Hooks (useContext)
 import React.Basic.Hooks as React
+import State.Helpers (useSelector)
+import State.ToggleReducer (toggle)
 
 mkHome :: AppComponent Unit
 mkHome = do
   { stateContext, dispatchContext } <- ask
   link <- mkLink
   appComponent "Home" \_ -> React.do
-    state <- useContext stateContext
+    toggleState <- useSelector stateContext (\state -> state.toggle)
     dispatch <- useContext dispatchContext
     let
-      handleToggle = dispatch Toggle
+      handleToggle = dispatch toggle
     pure
       $ DOM.div_
           [ DOM.h1_ [ DOM.text "Home" ]
@@ -29,7 +30,7 @@ mkHome = do
               { onClick: capture_ do handleToggle
               , children:
                   [ DOM.text "Clicks: "
-                  , DOM.text (show state)
+                  , DOM.text (show toggleState)
                   ]
               }
           ]
