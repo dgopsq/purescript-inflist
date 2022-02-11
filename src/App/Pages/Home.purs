@@ -9,6 +9,7 @@ import React.Basic.DOM.Events (capture_)
 import React.Basic.Hooks (useContext)
 import React.Basic.Hooks as React
 import State.Helpers (useSelector)
+import State.Selectors (toggleSelector)
 import State.ToggleReducer (toggle)
 
 mkHome :: AppComponent Unit
@@ -16,7 +17,7 @@ mkHome = do
   { store } <- ask
   link <- mkLink
   appComponent "Home" \_ -> React.do
-    toggleState <- useSelector store.stateContext (\state -> state.toggle)
+    toggleState <- useSelector store.stateContext toggleSelector
     dispatch <- useContext store.dispatchContext
     let
       handleToggle = dispatch toggle

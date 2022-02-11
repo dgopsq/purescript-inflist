@@ -12,7 +12,9 @@ type DispatchContext
   = ReactContext (RootAction -> Effect Unit)
 
 type Store
-  = { stateContext :: StateContext, dispatchContext :: DispatchContext }
+  = { stateContext :: StateContext
+    , dispatchContext :: DispatchContext
+    }
 
 mkStateContext :: Effect StateContext
 mkStateContext = createContext rootInitialState

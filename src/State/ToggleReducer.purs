@@ -22,5 +22,5 @@ type ToggleAction' v
 injAction :: forall v. ToggleAction -> Variant (ToggleAction' v)
 injAction = inj (Proxy :: Proxy "toggle")
 
-toggle :: Variant (ToggleAction' ())
+toggle :: forall v. Variant (ToggleAction' v)
 toggle = injAction Toggle

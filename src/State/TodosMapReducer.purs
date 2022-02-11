@@ -1,5 +1,6 @@
 module State.TodosMapReducer where
 
+import Prelude
 import Data.Map (Map, empty, insert)
 import Data.Variant (Variant, inj)
 import Type.Proxy (Proxy(..))
@@ -8,7 +9,10 @@ type TodoId
   = String
 
 type Todo
-  = { id :: TodoId, checked :: Boolean, text :: String }
+  = { id :: TodoId
+    , checked :: Boolean
+    , text :: String
+    }
 
 type TodosMapState
   = Map TodoId Todo
@@ -23,10 +27,10 @@ todosMapReducer :: TodosMapState -> TodosMapAction -> TodosMapState
 todosMapReducer state (UpsertTodo todo) = insert todo.id todo state
 
 type TodosMapAction' v
-  = ( todosMapAction :: TodosMapAction | v )
+  = ( todosMap :: TodosMapAction | v )
 
 injAction :: forall v. TodosMapAction -> Variant (TodosMapAction' v)
-injAction = inj (Proxy :: Proxy "todosMapAction")
+injAction = inj (Proxy :: Proxy "todosMap")
 
-upsertTodo :: Todo -> Variant (TodosMapAction' ())
-upsertTodo todo = injAction (UpsertTodo todo)
+upsertTodo :: forall v. Todo -> Variant (TodosMapAction' v)
+upsertTodo = injAction <<< UpsertTodo

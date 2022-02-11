@@ -19,6 +19,7 @@ to generate this file without the comments in this block.
   , "foreign"
   , "maybe"
   , "newtype"
+  , "ordered-collections"
   , "partial"
   , "prelude"
   , "psci-support"
