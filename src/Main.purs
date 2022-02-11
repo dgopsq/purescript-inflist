@@ -10,7 +10,6 @@ import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (throw)
 import React.Basic.DOM (render)
-import React.Basic.DOM as R
 import React.Basic.Hooks (fragment)
 import React.Basic.Hooks as React
 import Routes (AppRoute(..))
