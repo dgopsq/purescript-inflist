@@ -3,6 +3,7 @@ module Main where
 import Prelude
 import App.Pages.About (mkAbout)
 import App.Pages.Home (mkHome)
+import App.Pages.NotFound (mkNotFound)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))
@@ -44,6 +45,7 @@ mkApp = do
   { router } <- ask
   home <- mkHome
   about <- mkAbout
+  notFound <- mkNotFound
   appComponent "App" \_ -> React.do
     { route } <- useRouterContext router.routerContext
     pure do
@@ -51,5 +53,5 @@ mkApp = do
         [ case route of
             Just Home -> home unit
             Just About -> about unit
-            Nothing -> R.div_ [ R.text "-" ]
+            Nothing -> notFound unit
         ]
