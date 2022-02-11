@@ -1,9 +1,6 @@
 module State.RootReducer where
 
-import Prelude
 import Data.Variant (Variant, match)
-import Effect (Effect)
-import React.Basic.Hooks (ReactContext)
 import State.ToggleReducer as Toggle
 
 type RootAction
@@ -11,12 +8,6 @@ type RootAction
 
 type RootState
   = { toggle :: Toggle.ToggleState }
-
-type StateContext
-  = ReactContext RootState
-
-type DispatchContext
-  = ReactContext (RootAction -> Effect Unit)
 
 rootInitialState :: RootState
 rootInitialState = { toggle: Toggle.toggleInitialState }

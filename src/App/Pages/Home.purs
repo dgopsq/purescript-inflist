@@ -13,11 +13,11 @@ import State.ToggleReducer (toggle)
 
 mkHome :: AppComponent Unit
 mkHome = do
-  { stateContext, dispatchContext } <- ask
+  { store } <- ask
   link <- mkLink
   appComponent "Home" \_ -> React.do
-    toggleState <- useSelector stateContext (\state -> state.toggle)
-    dispatch <- useContext dispatchContext
+    toggleState <- useSelector store.stateContext (\state -> state.toggle)
+    dispatch <- useContext store.dispatchContext
     let
       handleToggle = dispatch toggle
     pure

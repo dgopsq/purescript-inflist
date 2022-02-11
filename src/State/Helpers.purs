@@ -4,28 +4,21 @@ import Prelude
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
 import Data.Newtype (class Newtype)
-import Effect (Effect)
 import React.Basic (JSX, ReactContext, provider)
-import React.Basic.Hooks (type (&), Hook, UseContext, UseEffect, UseState, coerceHook, createContext, mkReducer, useContext, useEffect, useReducer, useState, (/\))
+import React.Basic.Hooks (type (&), Hook, UseContext, UseEffect, UseState, coerceHook, mkReducer, useContext, useEffect, useReducer, useState, (/\))
 import React.Basic.Hooks as React
-import State.RootReducer (DispatchContext, StateContext, rootInitialState, rootReducer)
+import State.RootReducer (RootState, RootAction)
 
-mkStateContext :: Effect StateContext
-mkStateContext = createContext rootInitialState
-
-mkDispatchContext :: Effect DispatchContext
-mkDispatchContext = createContext (\_ -> do pure unit)
-
-mkStateProvider :: AppComponent (Array JSX)
-mkStateProvider = do
-  { stateContext, dispatchContext } <- ask
+mkStoreProvider :: RootState -> (RootState -> RootAction -> RootState) -> AppComponent (Array JSX)
+mkStoreProvider initialState rootReducer = do
+  { store } <- ask
   reducer <- lift $ mkReducer rootReducer
   appComponent "State" \children -> React.do
-    state /\ dispatch <- useReducer rootInitialState reducer
+    state /\ dispatch <- useReducer initialState reducer
     let
-      stateProvider = provider stateContext
+      stateProvider = provider store.stateContext
 
-      dispatchProvider = provider dispatchContext
+      dispatchProvider = provider store.dispatchContext
     pure $ dispatchProvider dispatch [ stateProvider state children ]
 
 useSelector :: forall b ctx. Eq ctx => ReactContext ctx -> (ctx -> b) -> Hook (UseSelector ctx b) b
