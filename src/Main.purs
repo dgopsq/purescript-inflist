@@ -13,7 +13,7 @@ import React.Basic.DOM as R
 import React.Basic.Hooks (fragment)
 import React.Basic.Hooks as React
 import Routes (AppRoute(..))
-import Routes.Helpers (mkRouterContext, mkRouterProvider, useRouterContext)
+import Routes.Helpers (mkRouter, mkRouterProvider, useRouterContext)
 import State.Helpers (mkStoreProvider)
 import State.RootReducer (rootInitialState, rootReducer)
 import State.Store (mkStore)
@@ -28,10 +28,10 @@ main = do
   case root of
     Nothing -> throw "Root element not found."
     Just r -> do
-      routerContext <- mkRouterContext
+      router <- mkRouter
       store <- mkStore
       let
-        env = { routerContext, store }
+        env = { router, store }
       routerProvider <- runReaderT mkRouterProvider env
       storeProvider <- runReaderT (mkStoreProvider rootInitialState rootReducer) env
       app <- runReaderT mkApp env
@@ -41,11 +41,11 @@ main = do
 -- | managing all the internal routes.
 mkApp :: AppComponent Unit
 mkApp = do
-  { routerContext } <- ask
+  { router } <- ask
   home <- mkHome
   about <- mkAbout
   appComponent "App" \_ -> React.do
-    { route } <- useRouterContext routerContext
+    { route } <- useRouterContext router.routerContext
     pure do
       fragment
         [ case route of

@@ -6,12 +6,12 @@ import Effect (Effect)
 import React.Basic (JSX)
 import React.Basic.Hooks (Render)
 import React.Basic.Hooks as React
-import Routes (RouterContext)
+import Routes (Router)
 import State.Store (Store)
 
 -- | The Record used for the DI.
 type AppEnv
-  = { routerContext :: RouterContext
+  = { router :: Router
     , store :: Store
     }
 

@@ -38,3 +38,6 @@ type RouterContextValue
   = { route :: Maybe AppRoute
     , nav :: PushStateInterface
     }
+
+type Router
+  = { routerContext :: RouterContext }

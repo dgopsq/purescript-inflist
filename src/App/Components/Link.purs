@@ -11,9 +11,9 @@ import Routes.Helpers (useRouterContext)
 
 mkLink :: AppComponent { route :: String, text :: String }
 mkLink = do
-  { routerContext } <- ask
+  { router } <- ask
   appComponent "Link" \{ route, text } -> React.do
-    { nav } <- useRouterContext routerContext
+    { nav } <- useRouterContext router.routerContext
     let
       handlePress = capture_ $ nav.pushState (unsafeToForeign {}) route
     pure $ DOM.a { href: "#", onClick: handlePress, children: [ DOM.text text ] }
