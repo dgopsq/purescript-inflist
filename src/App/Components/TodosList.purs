@@ -13,7 +13,9 @@ import React.Basic.Events (SyntheticEvent)
 import State.TodosMapReducer (Todo, TodoId)
 
 type Props
-  = { todos :: List Todo, onTodoChangeStatus :: TodoId -> Boolean -> Effect Unit }
+  = { todos :: List Todo
+    , onTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
+    }
 
 mkTodosList :: AppComponent Props
 mkTodosList = do
