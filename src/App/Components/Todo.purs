@@ -5,7 +5,7 @@ import AppEnv (AppComponent, appComponent)
 import Effect.Uncurried (EffectFn1)
 import React.Basic.DOM as DOM
 import React.Basic.Events (SyntheticEvent)
-import State.TodosMapReducer (Todo)
+import State.Todo (Todo)
 
 type Props
   = { todo :: Todo, onChangeStatus :: EffectFn1 SyntheticEvent Unit }

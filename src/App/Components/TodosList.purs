@@ -10,7 +10,7 @@ import Effect (Effect)
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import React.Basic.DOM as DOM
 import React.Basic.Events (SyntheticEvent)
-import State.TodosMapReducer (Todo, TodoId)
+import State.Todo (Todo, TodoId)
 
 type Props
   = { todos :: List Todo

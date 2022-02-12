@@ -1,13 +1,19 @@
 module State.ParentTodoReducer where
 
 import Prelude
-import App.Utilities.Todo (mkTodoWithoutId)
+import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, inj)
-import State.TodosMapReducer (TodoId, Todo)
+import State.Todo (Todo, TodoId, mkTodo)
 import Type.Proxy (Proxy(..))
 
+rootTodoId :: TodoId
+rootTodoId = "__root__"
+
 rootTodo :: Todo
-rootTodo = mkTodoWithoutId "__root" "" false
+rootTodo = mkTodo rootTodoId rootTodoId "" false
+
+rootTodoTuple :: Tuple TodoId Todo
+rootTodoTuple = Tuple rootTodoId rootTodo
 
 type ParentTodoState
   = TodoId
@@ -16,7 +22,7 @@ data ParentTodoAction
   = ChangeParentTodo TodoId
 
 parentTodoInitialState :: ParentTodoState
-parentTodoInitialState = rootTodo.id
+parentTodoInitialState = rootTodoId
 
 parentTodoReducer :: ParentTodoState -> ParentTodoAction -> ParentTodoState
 parentTodoReducer _ (ChangeParentTodo id) = id
