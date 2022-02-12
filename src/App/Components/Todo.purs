@@ -21,7 +21,7 @@ mkTodo =
                   [ DOM.input
                       { type: "checkbox"
                       , checked: todo.checked
-                      , onClick: onChangeStatus
+                      , onChange: onChangeStatus
                       }
                   ]
               , DOM.div_ [ DOM.text todo.text ]
