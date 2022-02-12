@@ -22,7 +22,7 @@ mkTodosListPage = do
     dispatch <- useContext store.dispatchContext
     let
       handleTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
-      handleTodoChangeStatus id status = dispatch (changeStatus id status)
+      handleTodoChangeStatus id status = dispatch $ changeStatus id status
     pure
       $ DOM.div
           { className: "flex flex-row justify-center pt-48"

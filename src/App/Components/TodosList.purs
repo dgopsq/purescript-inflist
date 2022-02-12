@@ -7,8 +7,9 @@ import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
-import Effect.Uncurried (mkEffectFn1)
+import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import React.Basic.DOM as DOM
+import React.Basic.Events (SyntheticEvent)
 import State.TodosMapReducer (Todo, TodoId)
 
 type Props
@@ -19,6 +20,9 @@ mkTodosList = do
   todo <- mkTodo
   appComponent "TodosList" \{ todos, onTodoChangeStatus } -> React.do
     let
+      handleTodoChangeStatus :: Todo -> EffectFn1 SyntheticEvent Unit
+      handleTodoChangeStatus t = mkEffectFn1 $ \_ -> onTodoChangeStatus t.id (not t.checked)
+
       maybeTodosArr =
         fromFoldable
           $ map
@@ -26,7 +30,7 @@ mkTodosList = do
                   DOM.li_
                     [ todo
                         { todo: t
-                        , onChangeStatus: mkEffectFn1 $ \_ -> onTodoChangeStatus t.id (not t.checked)
+                        , onChangeStatus: handleTodoChangeStatus t
                         }
                     ]
               )
