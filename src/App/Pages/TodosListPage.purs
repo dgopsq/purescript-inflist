@@ -17,7 +17,8 @@ mkTodosListPage = do
   appComponent "TodosListPage" \_ -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     pure
-      $ DOM.div_
-          [ DOM.h1_ [ DOM.text "Todos List" ]
-          , todosList { todos: values todosMapState }
-          ]
+      $ DOM.div
+          { className: "flex flex-row justify-center pt-48"
+          , children:
+              [ DOM.div_ [ todosList { todos: values todosMapState } ] ]
+          }
