@@ -1,9 +1,8 @@
 module Main where
 
 import Prelude
-import App.Pages.About (mkAbout)
-import App.Pages.NotFound (mkNotFound)
-import App.Pages.TodosList (mkTodosList)
+import App.Pages.NotFoundPage (mkNotFoundPage)
+import App.Pages.TodosListPage (mkTodosListPage)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))
@@ -42,15 +41,13 @@ main = do
 mkApp :: AppComponent Unit
 mkApp = do
   { router } <- ask
-  todosList <- mkTodosList
-  about <- mkAbout
-  notFound <- mkNotFound
+  todosListPage <- mkTodosListPage
+  notFoundPage <- mkNotFoundPage
   appComponent "App" \_ -> React.do
     { route } <- useRouterContext router.routerContext
     pure do
       fragment
         [ case route of
-            Just Home -> todosList unit
-            Just About -> about unit
-            Nothing -> notFound unit
+            Just Home -> todosListPage unit
+            Nothing -> notFoundPage unit
         ]

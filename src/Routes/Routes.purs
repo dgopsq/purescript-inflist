@@ -11,7 +11,6 @@ import Routing.PushState (PushStateInterface)
 -- | The App routes structure.
 data AppRoute
   = Home
-  | About
 
 -- | The App routes parser.
 appRoute :: Match (Maybe AppRoute)
@@ -23,10 +22,7 @@ appRoute =
   where
   routes =
     Match.root
-      *> Foldable.oneOf
-          [ pure About <$> (Match.lit "about")
-          , pure Home
-          ]
+      *> Foldable.oneOf [ pure Home ]
       <* Match.end
 
 -- | We have a `Maybe` here because the context has a default

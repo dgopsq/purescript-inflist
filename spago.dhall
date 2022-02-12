@@ -12,11 +12,13 @@ to generate this file without the comments in this block.
 -}
 { name = "my-project"
 , dependencies =
-  [ "console"
+  [ "arrays"
+  , "console"
   , "effect"
   , "exceptions"
   , "foldable-traversable"
   , "foreign"
+  , "lists"
   , "maybe"
   , "newtype"
   , "ordered-collections"
@@ -28,6 +30,7 @@ to generate this file without the comments in this block.
   , "react-basic-hooks"
   , "routing"
   , "transformers"
+  , "tuples"
   , "variant"
   , "web-dom"
   , "web-html"
