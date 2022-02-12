@@ -4,6 +4,7 @@ import Prelude
 import Data.List (snoc)
 import Data.Map (Map, fromFoldable, insert, lookup)
 import Data.Maybe (Maybe(..))
+import Data.String (length)
 import Data.Variant (Variant, inj)
 import State.ParentTodoReducer (rootTodoTuple)
 import State.Todo (Todo, TodoId)
@@ -20,19 +21,21 @@ todosMapInitialState :: TodosMapState
 todosMapInitialState = fromFoldable [ rootTodoTuple ]
 
 todosMapReducer :: TodosMapState -> TodosMapAction -> TodosMapState
-todosMapReducer state (AddTodo todo) = case maybeParent of
-  Just parent ->
-    insert parent.id
-      ( parent
-          { children = snoc parent.children todo.id
-          }
-      )
-      stateWithAddedTodo
-  _ -> state
-  where
-  maybeParent = lookup todo.parent state
+todosMapReducer state (AddTodo todo)
+  | length todo.text > 0 = case maybeParent of
+    Just parent ->
+      insert parent.id
+        ( parent
+            { children = snoc parent.children todo.id
+            }
+        )
+        stateWithAddedTodo
+    _ -> state
+    where
+    maybeParent = lookup todo.parent state
 
-  stateWithAddedTodo = insert todo.id todo state
+    stateWithAddedTodo = insert todo.id todo state
+  | otherwise = state
 
 todosMapReducer state (ChangeStatus todoId status) = case maybeTodo of
   Just todo -> insert todoId (todo { checked = status }) state
