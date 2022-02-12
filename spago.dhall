@@ -31,6 +31,7 @@ to generate this file without the comments in this block.
   , "routing"
   , "transformers"
   , "tuples"
+  , "uuid"
   , "variant"
   , "web-dom"
   , "web-html"
