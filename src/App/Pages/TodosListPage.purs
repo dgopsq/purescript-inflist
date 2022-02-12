@@ -2,6 +2,7 @@ module App.Pages.TodosListPage where
 
 import Prelude
 import App.Components.AddTodoInput (mkAddTodoInput)
+import App.Components.Layout (mkLayout)
 import App.Components.TodosList (mkTodosList)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
@@ -22,6 +23,7 @@ mkTodosListPage = do
   { store } <- ask
   todosList <- mkTodosList
   addTodoInput <- mkAddTodoInput
+  layout <- mkLayout
   appComponent "TodosListPage" \_ -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     parentTodoState <- useSelector store.stateContext parentTodoSelector
@@ -42,25 +44,20 @@ mkTodosListPage = do
         where
         maybeParent = lookup parentTodoState todosMapState
     pure
-      $ DOM.div
-          { className: "flex flex-row justify-center pt-48"
-          , children:
-              [ DOM.div
-                  { className: "max-w-xl w-full"
-                  , children:
-                      [ DOM.div_
-                          [ addTodoInput { onAdd: handleAdd }
-                          ]
-                      , DOM.div
-                          { className: if length showedTodos > 0 then "mt-4" else ""
-                          , children:
-                              [ todosList
-                                  { todos: showedTodos
-                                  , onTodoChangeStatus: handleTodoChangeStatus
-                                  }
-                              ]
-                          }
-                      ]
-                  }
-              ]
-          }
+      $ layout
+          [ DOM.div
+              { className: "pt-40"
+              , children:
+                  [ addTodoInput { onAdd: handleAdd }
+                  ]
+              }
+          , DOM.div
+              { className: if length showedTodos > 0 then "mt-4" else ""
+              , children:
+                  [ todosList
+                      { todos: showedTodos
+                      , onTodoChangeStatus: handleTodoChangeStatus
+                      }
+                  ]
+              }
+          ]
