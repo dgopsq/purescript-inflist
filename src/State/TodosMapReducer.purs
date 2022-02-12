@@ -1,7 +1,8 @@
 module State.TodosMapReducer where
 
 import Prelude
-import Data.Map (Map, empty, insert)
+import Data.Map (Map, fromFoldable, insert)
+import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, inj)
 import Type.Proxy (Proxy(..))
 
@@ -21,7 +22,11 @@ data TodosMapAction
   = UpsertTodo Todo
 
 todosMapInitialState :: TodosMapState
-todosMapInitialState = empty
+todosMapInitialState =
+  fromFoldable
+    [ Tuple "1" { id: "1", text: "Todo 1", checked: false }
+    , Tuple "2" { id: "2", text: "Todo 2", checked: true }
+    ]
 
 todosMapReducer :: TodosMapState -> TodosMapAction -> TodosMapState
 todosMapReducer state (UpsertTodo todo) = insert todo.id todo state
