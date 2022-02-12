@@ -5,7 +5,7 @@ import App.Components.AddTodoInput (mkAddTodoInput)
 import App.Components.TodosList (mkTodosList)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
-import Data.List (List, fromFoldable, mapMaybe)
+import Data.List (List, fromFoldable, length, mapMaybe)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
@@ -50,8 +50,12 @@ mkTodosListPage = do
                       { todos: showedTodos
                       , onTodoChangeStatus: handleTodoChangeStatus
                       }
-                  , DOM.div_
-                      [ addTodoInput { onAdd: handleAdd } ]
+                  , DOM.div
+                      { className: if length showedTodos > 0 then "mt-4" else ""
+                      , children:
+                          [ addTodoInput { onAdd: handleAdd }
+                          ]
+                      }
                   ]
               ]
           }
