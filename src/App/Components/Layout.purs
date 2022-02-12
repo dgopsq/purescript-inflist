@@ -16,7 +16,7 @@ mkLayout =
           { className: "flex flex-row justify-center"
           , children:
               [ DOM.div
-                  { className: "max-w-xl w-full"
+                  { className: "max-w-xl w-full px-8"
                   , children
                   }
               ]
