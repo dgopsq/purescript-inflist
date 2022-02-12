@@ -6,8 +6,7 @@ import Data.Map (Map, fromFoldable, insert, lookup)
 import Data.Maybe (Maybe(..))
 import Data.String (length)
 import Data.Variant (Variant, inj)
-import State.ParentTodoReducer (rootTodoTuple)
-import State.Todo (Todo, TodoId)
+import State.Todo (Todo, TodoId, rootTodoTuple)
 import Type.Proxy (Proxy(..))
 
 type TodosMapState

@@ -11,7 +11,7 @@ import React.Basic (JSX)
 import React.Basic as React.Basic
 import React.Basic.Hooks (Hook, UseContext, (/\))
 import React.Basic.Hooks as React
-import Routes (AppRoute(..), RouterContext, RouterContextValue, Router, appRoute)
+import Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appRoute)
 import Routing.PushState as PushState
 
 -- | Initialize the Router context.
@@ -46,7 +46,7 @@ mkRouterProvider = do
   appComponent "Router" \children -> React.do
     let
       routerProvider = React.Basic.provider router.routerContext
-    route /\ setRoute <- React.useState' (Just Home)
+    route /\ setRoute <- React.useState' (Just RootTodos)
     React.useEffectOnce do
       nav
         # PushState.matches appRoute \_ newRoute -> do

@@ -1,6 +1,7 @@
 module App.Components.Todo where
 
 import Prelude
+import App.Components.Link (mkLink)
 import AppEnv (AppComponent, appComponent)
 import Effect.Uncurried (EffectFn1)
 import React.Basic.DOM as DOM
@@ -11,7 +12,8 @@ type Props
   = { todo :: Todo, onChangeStatus :: EffectFn1 SyntheticEvent Unit }
 
 mkTodo :: AppComponent Props
-mkTodo =
+mkTodo = do
+  link <- mkLink
   appComponent "Todo" \{ todo, onChangeStatus } -> React.do
     pure
       $ DOM.div
@@ -24,6 +26,11 @@ mkTodo =
                       , onChange: onChangeStatus
                       }
                   ]
-              , DOM.div_ [ DOM.text todo.text ]
+              , DOM.div_
+                  [ link
+                      { route: "/" <> todo.id
+                      , text: todo.text
+                      }
+                  ]
               ]
           }

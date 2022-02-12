@@ -7,10 +7,12 @@ import React.Basic (ReactContext)
 import Routing.Match (Match)
 import Routing.Match as Match
 import Routing.PushState (PushStateInterface)
+import State.Todo (TodoId)
 
 -- | The App routes structure.
 data AppRoute
-  = Home
+  = RootTodos
+  | ChildrenTodos TodoId
 
 -- | The App routes parser.
 appRoute :: Match (Maybe AppRoute)
@@ -22,7 +24,10 @@ appRoute =
   where
   routes =
     Match.root
-      *> Foldable.oneOf [ pure Home ]
+      *> Foldable.oneOf
+          [ ChildrenTodos <$> Match.str
+          , pure RootTodos
+          ]
       <* Match.end
 
 -- | We have a `Maybe` here because the context has a default

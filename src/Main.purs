@@ -16,6 +16,7 @@ import Routes.Helpers (mkRouter, mkRouterProvider, useRouterContext)
 import State.Helpers (mkStoreProvider)
 import State.RootReducer (rootInitialState, rootReducer)
 import State.Store (mkStore)
+import State.Todo (rootTodoId)
 import Web.DOM.NonElementParentNode (getElementById)
 import Web.HTML (window)
 import Web.HTML.HTMLDocument (toNonElementParentNode)
@@ -48,6 +49,7 @@ mkApp = do
     pure do
       fragment
         [ case route of
-            Just Home -> todosListPage unit
+            Just RootTodos -> todosListPage { parentId: rootTodoId }
+            Just (ChildrenTodos todoId) -> todosListPage { parentId: todoId }
             Nothing -> notFoundPage unit
         ]
