@@ -45,17 +45,22 @@ mkTodosListPage = do
       $ DOM.div
           { className: "flex flex-row justify-center pt-48"
           , children:
-              [ DOM.div_
-                  [ todosList
-                      { todos: showedTodos
-                      , onTodoChangeStatus: handleTodoChangeStatus
-                      }
-                  , DOM.div
-                      { className: if length showedTodos > 0 then "mt-4" else ""
-                      , children:
+              [ DOM.div
+                  { className: "max-w-xl w-full"
+                  , children:
+                      [ DOM.div_
                           [ addTodoInput { onAdd: handleAdd }
                           ]
-                      }
-                  ]
+                      , DOM.div
+                          { className: if length showedTodos > 0 then "mt-4" else ""
+                          , children:
+                              [ todosList
+                                  { todos: showedTodos
+                                  , onTodoChangeStatus: handleTodoChangeStatus
+                                  }
+                              ]
+                          }
+                      ]
+                  }
               ]
           }
