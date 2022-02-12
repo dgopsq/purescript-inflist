@@ -14,8 +14,8 @@ mkTodosList = do
   todo <- mkTodo
   appComponent "TodosList" \{ todos } -> React.do
     let
-      maybeTodosArr = fromFoldable $ map (\t -> todo { todo: t }) todos
+      maybeTodosArr = fromFoldable $ map (\t -> DOM.li_ [ todo { todo: t } ]) todos
 
       todosArr = fromMaybe [] $ map toArray maybeTodosArr
     pure
-      $ DOM.div_ todosArr
+      $ DOM.ul_ todosArr

@@ -10,7 +10,7 @@ mkTodo =
   appComponent "Todo" \{ todo } -> React.do
     pure
       $ DOM.div
-          { className: "flex flex-row gap-x-3"
+          { className: "flex flex-row gap-x-3 align-center"
           , children:
               [ DOM.div_ [ DOM.input { type: "checkbox", checked: todo.checked } ]
               , DOM.div_ [ DOM.text todo.text ]
