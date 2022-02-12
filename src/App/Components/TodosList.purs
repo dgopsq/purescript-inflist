@@ -6,15 +6,31 @@ import AppEnv (AppComponent, appComponent)
 import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)
+import Effect (Effect)
+import Effect.Uncurried (mkEffectFn1)
 import React.Basic.DOM as DOM
-import State.TodosMapReducer (Todo)
+import State.TodosMapReducer (Todo, TodoId)
 
-mkTodosList :: AppComponent { todos :: List Todo }
+type Props
+  = { todos :: List Todo, onTodoChangeStatus :: TodoId -> Boolean -> Effect Unit }
+
+mkTodosList :: AppComponent Props
 mkTodosList = do
   todo <- mkTodo
-  appComponent "TodosList" \{ todos } -> React.do
+  appComponent "TodosList" \{ todos, onTodoChangeStatus } -> React.do
     let
-      maybeTodosArr = fromFoldable $ map (\t -> DOM.li_ [ todo { todo: t } ]) todos
+      maybeTodosArr =
+        fromFoldable
+          $ map
+              ( \t ->
+                  DOM.li_
+                    [ todo
+                        { todo: t
+                        , onChangeStatus: mkEffectFn1 $ \_ -> onTodoChangeStatus t.id (not t.checked)
+                        }
+                    ]
+              )
+              todos
 
       todosArr = fromMaybe [] $ map toArray maybeTodosArr
     pure

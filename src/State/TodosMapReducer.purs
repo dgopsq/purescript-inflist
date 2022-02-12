@@ -1,7 +1,8 @@
 module State.TodosMapReducer where
 
 import Prelude
-import Data.Map (Map, fromFoldable, insert)
+import Data.Map (Map, fromFoldable, insert, lookup)
+import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, inj)
 import Type.Proxy (Proxy(..))
@@ -20,6 +21,7 @@ type TodosMapState
 
 data TodosMapAction
   = UpsertTodo Todo
+  | ChangeStatus TodoId Boolean
 
 todosMapInitialState :: TodosMapState
 todosMapInitialState =
@@ -31,6 +33,12 @@ todosMapInitialState =
 todosMapReducer :: TodosMapState -> TodosMapAction -> TodosMapState
 todosMapReducer state (UpsertTodo todo) = insert todo.id todo state
 
+todosMapReducer state (ChangeStatus todoId status) = case maybeTodo of
+  Just todo -> insert todoId (todo { checked = status }) state
+  Nothing -> state
+  where
+  maybeTodo = lookup todoId state
+
 type TodosMapAction' v
   = ( todosMap :: TodosMapAction | v )
 
@@ -39,3 +47,6 @@ injAction = inj (Proxy :: Proxy "todosMap")
 
 upsertTodo :: forall v. Todo -> Variant (TodosMapAction' v)
 upsertTodo = injAction <<< UpsertTodo
+
+changeStatus :: forall v. TodoId -> Boolean -> Variant (TodosMapAction' v)
+changeStatus todoId status = injAction (ChangeStatus todoId status)
