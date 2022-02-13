@@ -12,9 +12,11 @@ to generate this file without the comments in this block.
 -}
 { name = "inflist"
 , dependencies =
-  [ "arrays"
+  [ "argonaut"
+  , "arrays"
   , "console"
   , "effect"
+  , "either"
   , "exceptions"
   , "foldable-traversable"
   , "foreign"
@@ -36,6 +38,7 @@ to generate this file without the comments in this block.
   , "variant"
   , "web-dom"
   , "web-html"
+  , "web-storage"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
