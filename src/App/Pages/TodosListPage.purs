@@ -3,13 +3,14 @@ module App.Pages.TodosListPage where
 import Prelude
 import App.Components.AddTodoInput (mkAddTodoInput)
 import App.Components.Layout (mkLayout)
-import App.Components.Link (mkLink)
 import App.Components.TodosList (mkTodosList)
+import App.Components.TodosListNav (mkTodosListNav)
 import AppEnv (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
-import Data.List (List, fromFoldable, length, mapMaybe)
+import Data.List (fromFoldable, length, mapMaybe)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..))
+import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Console (log)
 import React.Basic.DOM as DOM
@@ -17,7 +18,7 @@ import React.Basic.Hooks (useContext, useEffect)
 import React.Basic.Hooks as React
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
-import State.Todo (Todo, TodoId, genUniqTodo)
+import State.Todo (TodoId, genUniqTodo)
 import State.TodosMapReducer (changeStatus, addTodo)
 
 type Props
@@ -29,7 +30,7 @@ mkTodosListPage = do
   todosList <- mkTodosList
   addTodoInput <- mkAddTodoInput
   layout <- mkLayout
-  link <- mkLink
+  todosListNav <- mkTodosListNav
   appComponent "TodosListPage" \{ parentId } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
@@ -45,19 +46,30 @@ mkTodosListPage = do
         newTodo <- genUniqTodo parentId text false
         dispatch $ addTodo newTodo
 
-      showedTodos :: List Todo
+      maybeParent = lookup parentId todosMapState
+
+      maybePrevious = case maybeParent of
+        Just parent -> lookup parent.parent todosMapState
+        _ -> Nothing
+
       showedTodos = case maybeParent of
         Just parent -> mapMaybe (\id -> lookup id todosMapState) parent.children
         _ -> fromFoldable []
-        where
-        maybeParent = lookup parentId todosMapState
+
+      computedTodosListNav = case (Tuple maybeParent maybePrevious) of
+        (Tuple (Just parent) (Just previous)) ->
+          [ todosListNav
+              { parentTodo: parent
+              , previousTodo: previous
+              }
+          ]
+        _ -> []
     pure
       $ layout
           [ DOM.div
               { className: "pt-40"
               , children:
-                  [ DOM.div_
-                      [ link { route: "/", text: "Home" } ]
+                  [ DOM.div_ computedTodosListNav
                   , DOM.div
                       { className: "mt-4"
                       , children:

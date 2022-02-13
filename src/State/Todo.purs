@@ -35,3 +35,6 @@ rootTodo = mkTodo rootTodoId rootTodoId "" false
 
 rootTodoTuple :: Tuple TodoId Todo
 rootTodoTuple = Tuple rootTodoId rootTodo
+
+isRootTodo :: Todo -> Boolean
+isRootTodo todo = todo.id == todo.parent
