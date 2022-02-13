@@ -1,6 +1,7 @@
 module AppEnv where
 
 import Prelude
+import Api.Storage.Storage (TodosStorage)
 import Control.Monad.Reader (ReaderT(..))
 import Effect (Effect)
 import React.Basic (JSX)
@@ -13,6 +14,7 @@ import State.Store (Store)
 type AppEnv
   = { router :: Router
     , store :: Store
+    , todosStorage :: TodosStorage
     }
 
 -- | Wrap the default `React.Basic.Hooks.Component` using the

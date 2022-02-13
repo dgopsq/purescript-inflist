@@ -12,6 +12,7 @@ import Data.Map (lookup)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
+import Effect.Aff (launchAff_)
 import Effect.Console (log)
 import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext, useEffect)
@@ -19,14 +20,14 @@ import React.Basic.Hooks as React
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
 import State.Todo (TodoId, genUniqTodo)
-import State.TodosMapReducer (changeStatus, addTodo)
+import State.TodosMapReducer (addTodo, updateTodo)
 
 type Props
   = { parentId :: TodoId }
 
 mkTodosListPage :: AppComponent Props
 mkTodosListPage = do
-  { store } <- ask
+  { store, todosStorage } <- ask
   todosList <- mkTodosList
   addTodoInput <- mkAddTodoInput
   layout <- mkLayout
@@ -39,11 +40,20 @@ mkTodosListPage = do
       mempty
     let
       handleTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
-      handleTodoChangeStatus id status = dispatch $ changeStatus id status
+      handleTodoChangeStatus id status = case maybeTodo of
+        Just todo -> do
+          let
+            updatedTodo = todo { checked = status }
+          _ <- launchAff_ $ todosStorage.store todo.id updatedTodo
+          dispatch $ updateTodo id updatedTodo
+        _ -> pure unit
+        where
+        maybeTodo = lookup id todosMapState
 
       handleAdd :: String -> Effect Unit
       handleAdd text = do
         newTodo <- genUniqTodo parentId text false
+        _ <- launchAff_ $ todosStorage.store newTodo.id newTodo
         dispatch $ addTodo newTodo
 
       maybeParent = lookup parentId todosMapState

@@ -1,6 +1,7 @@
 module Main where
 
 import Prelude
+import Api.Storage.LocalStorage (localTodosStorage)
 import App.Pages.NotFoundPage (mkNotFoundPage)
 import App.Pages.TodosListPage (mkTodosListPage)
 import AppEnv (AppComponent, appComponent)
@@ -31,7 +32,9 @@ main = do
       router <- mkRouter
       store <- mkStore
       let
-        env = { router, store }
+        todosStorage = localTodosStorage
+
+        env = { router, store, todosStorage }
       routerProvider <- runReaderT mkRouterProvider env
       storeProvider <- runReaderT (mkStoreProvider rootInitialState rootReducer) env
       app <- runReaderT mkApp env

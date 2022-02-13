@@ -7,23 +7,28 @@ import Api.Storage.Storage (TodoStoreFn, TodosStorage, TodoRetrieveFn)
 import Data.Argonaut (fromString, stringify)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..))
-import Effect (Effect)
+import Effect.Aff (Aff)
+import Effect.Class (liftEffect)
 import Misc.Codecs (todoFromJson, todoToJson)
 import Web.HTML (window)
 import Web.HTML.Window (localStorage)
 import Web.Storage.Storage (getItem, setItem)
 
-localStorageStore :: String -> String -> Effect Unit
-localStorageStore key value = do
-  w <- window
-  s <- localStorage w
-  setItem key value s
+localStorageStore :: String -> String -> Aff Unit
+localStorageStore key value =
+  liftEffect
+    $ do
+        w <- window
+        s <- localStorage w
+        setItem key value s
 
-localStorageRetrieve :: String -> Effect (Maybe String)
-localStorageRetrieve key = do
-  w <- window
-  s <- localStorage w
-  getItem key s
+localStorageRetrieve :: String -> Aff (Maybe String)
+localStorageRetrieve key =
+  liftEffect
+    $ do
+        w <- window
+        s <- localStorage w
+        getItem key s
 
 store :: TodoStoreFn
 store todoId todo = localStorageStore todoId encodedtodo

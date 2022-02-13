@@ -2,14 +2,14 @@ module Api.Storage.Storage where
 
 import Prelude
 import Data.Maybe (Maybe)
-import Effect (Effect)
+import Effect.Aff (Aff)
 import State.Todo (Todo, TodoId)
 
 type TodoStoreFn
-  = TodoId -> Todo -> Effect Unit
+  = TodoId -> Todo -> Aff Unit
 
 type TodoRetrieveFn
-  = TodoId -> Effect (Maybe Todo)
+  = TodoId -> Aff (Maybe Todo)
 
 type TodosStorage
   = { store :: TodoStoreFn
