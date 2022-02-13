@@ -16,9 +16,15 @@ mkTodosListNav = do
     let
       isRoot = isRootTodo parentTodo
 
+      isPreviousRoot = isRootTodo previousTodo
+
+      previousLink = case isPreviousRoot of
+        true -> "/"
+        false -> "/" <> previousTodo.id
+
       backLink = case isRoot of
         true -> []
-        false -> [ link { route: "/" <> previousTodo.id, text: "Back" } ]
+        false -> [ link { route: previousLink, text: "Back" } ]
 
       title = case isRoot of
         true -> "Home"
