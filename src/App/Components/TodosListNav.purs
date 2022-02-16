@@ -2,7 +2,7 @@ module App.Components.TodosListNav where
 
 import Prelude
 import App.Components.Link (mkLink)
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import React.Basic.DOM as DOM
 import State.Todo (Todo, isRootTodo)
 

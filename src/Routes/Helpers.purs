@@ -1,7 +1,7 @@
 module Routes.Helpers where
 
 import Prelude
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader as Reader
 import Data.Maybe (Maybe(..))
 import Effect (Effect)

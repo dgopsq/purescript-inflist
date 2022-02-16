@@ -1,4 +1,4 @@
-module AppEnv where
+module AppComponent where
 
 import Prelude
 import Api.Storage.Storage (TodosStorage)
@@ -11,7 +11,7 @@ import Routes (Router)
 import State.Store (Store)
 
 -- | The Record used for the DI.
-type AppEnv
+type AppComponentEnv
   = { router :: Router
     , store :: Store
     , todosStorage :: TodosStorage
@@ -20,7 +20,7 @@ type AppEnv
 -- | Wrap the default `React.Basic.Hooks.Component` using the
 -- | `ReaderT` monad transformer for Dependency Injection.
 type AppComponent props
-  = ReaderT AppEnv Effect (props -> JSX)
+  = ReaderT AppComponentEnv Effect (props -> JSX)
 
 -- | Create a `React.Basic.Hooks.Component` wrapped into
 -- | a `ReaderT` monad transformer for Dependency Injection.

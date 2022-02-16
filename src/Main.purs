@@ -4,7 +4,7 @@ import Prelude
 import Api.Storage.LocalStorage (localTodosStorage)
 import App.Pages.NotFoundPage (mkNotFoundPage)
 import App.Pages.TodosListPage (mkTodosListPage)
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)

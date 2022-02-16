@@ -1,7 +1,7 @@
 module App.Components.Link where
 
 import Prelude
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import Foreign (unsafeToForeign)
 import React.Basic.DOM as DOM

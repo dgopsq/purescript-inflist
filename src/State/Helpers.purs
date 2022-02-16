@@ -1,7 +1,7 @@
 module State.Helpers where
 
 import Prelude
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
 import Data.Newtype (class Newtype)
 import React.Basic (JSX, ReactContext, provider)

@@ -1,7 +1,7 @@
 module App.Pages.NotFoundPage where
 
 import Prelude
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import React.Basic.DOM as DOM
 
 mkNotFoundPage :: AppComponent Unit

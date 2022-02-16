@@ -2,7 +2,7 @@ module App.Components.Todo where
 
 import Prelude
 import App.Components.Link (mkLink)
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Effect.Uncurried (EffectFn1)
 import React.Basic.DOM as DOM
 import React.Basic.Events (SyntheticEvent)

@@ -2,7 +2,7 @@ module App.Components.TodosList where
 
 import Prelude
 import App.Components.Todo (mkTodo)
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)

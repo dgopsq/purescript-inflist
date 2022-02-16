@@ -1,7 +1,7 @@
 module App.Components.AddTodoInput where
 
 import Prelude
-import AppEnv (AppComponent, appComponent)
+import AppComponent (AppComponent, appComponent)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
