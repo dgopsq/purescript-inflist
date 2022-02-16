@@ -4,11 +4,12 @@ module Api.Storage.LocalStorage
 
 import Prelude
 import Api.Storage.Storage (TodoStoreFn, TodosStorage, TodoRetrieveFn)
-import Data.Argonaut (fromString, stringify)
+import Data.Argonaut (parseJson, stringify)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
+import Effect.Console (log)
 import Misc.Codecs (todoFromJson, todoToJson)
 import Web.HTML (window)
 import Web.HTML.Window (localStorage)
@@ -31,7 +32,9 @@ localStorageRetrieve key =
         getItem key s
 
 store :: TodoStoreFn
-store todoId todo = localStorageStore todoId encodedtodo
+store todoId todo = do
+  _ <- liftEffect $ log ("Stored todo " <> show todo)
+  localStorageStore todoId encodedtodo
   where
   encodedtodo = stringify $ todoToJson todo
 
@@ -39,7 +42,10 @@ retrieve :: TodoRetrieveFn
 retrieve key = do
   maybeRetrieved <- localStorageRetrieve key
   case maybeRetrieved of
-    Just retrieved -> pure <<< hush <<< todoFromJson <<< fromString $ retrieved
+    Just retrieved -> do
+      parsed <- pure $ hush (todoFromJson =<< parseJson retrieved)
+      _ <- liftEffect $ log ("Retrieved todo " <> show parsed)
+      pure parsed
     _ -> pure Nothing
 
 localTodosStorage :: TodosStorage

@@ -5,11 +5,12 @@ import App.Components.Todo (mkTodo)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import Data.Map (lookup)
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, isJust)
+import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import React.Basic.DOM as DOM
-import React.Basic.Hooks (useContext)
+import React.Basic.Hooks (useContext, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
 import State.Helpers (useSelector)
@@ -32,14 +33,18 @@ mkConnectedTodo = do
     let
       maybeTodo = lookup id todosMapState
     -- Retrieve from the storage the missing todo
-    useAff [ id ] do
-      maybeRetrievedTodo <- todosStorage.retrieve id
-      case maybeRetrievedTodo of
-        Just retrievedTodo -> liftEffect <<< dispatch $ loadTodo retrievedTodo
-        _ -> pure unit
+    retrievedTodo <-
+      map isJust
+        $ useAff id do
+            maybeRetrievedTodo <- todosStorage.retrieve id
+            case maybeRetrievedTodo of
+              Just retrievedTodo -> liftEffect <<< dispatch $ loadTodo retrievedTodo
+              _ -> pure unit
     -- Update the todo into the storage
-    useAff [ maybeTodo ] do
-      case maybeTodo of
-        Just updatedTodo -> todosStorage.store updatedTodo.id updatedTodo
+    -- FIXME: There is an incorrect call
+    -- in the very first render.
+    useAff (retrievedTodo /\ maybeTodo) do
+      case (Tuple retrievedTodo maybeTodo) of
+        (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo
         _ -> pure unit
     pure $ fromMaybe (DOM.div_ []) $ map (\t -> todo { todo: t, onChangeStatus }) maybeTodo

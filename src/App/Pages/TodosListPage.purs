@@ -9,17 +9,18 @@ import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import Data.List (fromFoldable, length)
 import Data.Map (lookup)
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
+import Effect.Class (liftEffect)
 import React.Basic.DOM as DOM
-import React.Basic.Hooks (useContext)
+import React.Basic.Hooks (useContext, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
 import State.Todo (TodoId, genUniqTodo)
-import State.TodosMapReducer (addTodo, updateTodo)
+import State.TodosMapReducer (addTodo, loadTodo, updateTodo)
 
 type Props
   = { parentId :: TodoId }
@@ -63,12 +64,24 @@ mkTodosListPage = do
               }
           ]
         _ -> []
+    -- This is used to retrieve the parent
+    -- from the storage.
+    parentRetrieved <-
+      map isJust
+        $ useAff parentId do
+            maybeRetrievedParentTodo <- todosStorage.retrieve parentId
+            case maybeRetrievedParentTodo of
+              Just retrievedParentTodo -> liftEffect <<< dispatch $ loadTodo retrievedParentTodo
+              _ -> pure unit
     -- This is used to synchronize the
     -- root todo with the storage.
-    useAff [ maybeParent ] do
-      case maybeParent of
-        Just parent -> todosStorage.store parent.id parent
-        _ -> pure unit
+    -- FIXME: There is an incorrect call
+    -- in the very first render.
+    _ <-
+      useAff (parentRetrieved /\ maybeParent) do
+        case (Tuple parentRetrieved maybeParent) of
+          (Tuple true (Just parent)) -> todosStorage.store parent.id parent
+          _ -> pure unit
     pure
       $ layout
           [ DOM.div
