@@ -15,6 +15,7 @@ type TodosMapState
 data TodosMapAction
   = AddTodo Todo
   | UpdateTodo TodoId Todo
+  | LoadTodo Todo
 
 todosMapInitialState :: TodosMapState
 todosMapInitialState = fromFoldable [ rootTodoTuple ]
@@ -42,6 +43,8 @@ todosMapReducer state (UpdateTodo todoId newTodo) = case maybeTodo of
   where
   maybeTodo = lookup todoId state
 
+todosMapReducer state (LoadTodo todo) = insert todo.id todo state
+
 type TodosMapAction' v
   = ( todosMap :: TodosMapAction | v )
 
@@ -53,3 +56,6 @@ addTodo = injAction <<< AddTodo
 
 updateTodo :: forall v. TodoId -> Todo -> Variant (TodosMapAction' v)
 updateTodo todoId newTodo = injAction (UpdateTodo todoId newTodo)
+
+loadTodo :: forall v. Todo -> Variant (TodosMapAction' v)
+loadTodo = injAction <<< LoadTodo

@@ -9,13 +9,13 @@ import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import Data.List (fromFoldable, length)
 import Data.Map (lookup)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
-import Effect.Aff (launchAff_)
 import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext)
 import React.Basic.Hooks as React
+import React.Basic.Hooks.Aff (useAff)
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
 import State.Todo (TodoId, genUniqTodo)
@@ -35,13 +35,11 @@ mkTodosListPage = do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
     let
+      maybeParent = lookup parentId todosMapState
+
       handleTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
       handleTodoChangeStatus id status = case maybeTodo of
-        Just todo -> do
-          let
-            updatedTodo = todo { checked = status }
-          _ <- launchAff_ $ todosStorage.store todo.id updatedTodo
-          dispatch $ updateTodo id updatedTodo
+        Just todo -> dispatch $ updateTodo id (todo { checked = status })
         _ -> pure unit
         where
         maybeTodo = lookup id todosMapState
@@ -49,18 +47,13 @@ mkTodosListPage = do
       handleAdd :: String -> Effect Unit
       handleAdd text = do
         newTodo <- genUniqTodo parentId text false
-        _ <- launchAff_ $ todosStorage.store newTodo.id newTodo
         dispatch $ addTodo newTodo
-
-      maybeParent = lookup parentId todosMapState
 
       maybePrevious = case maybeParent of
         Just parent -> lookup parent.parent todosMapState
         _ -> Nothing
 
-      showedTodos = case maybeParent of
-        Just parent -> parent.children
-        _ -> fromFoldable []
+      showedTodos = fromMaybe (fromFoldable []) $ map _.children maybeParent
 
       computedTodosListNav = case (Tuple maybeParent maybePrevious) of
         (Tuple (Just parent) (Just previous)) ->
@@ -70,6 +63,12 @@ mkTodosListPage = do
               }
           ]
         _ -> []
+    -- This is used to synchronize the
+    -- root todo with the storage.
+    useAff [ maybeParent ] do
+      case maybeParent of
+        Just parent -> todosStorage.store parent.id parent
+        _ -> pure unit
     pure
       $ layout
           [ DOM.div
