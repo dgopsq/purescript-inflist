@@ -3,13 +3,13 @@ module App.Components.Todo where
 import Prelude
 import App.Components.Link (mkLink)
 import AppComponent (AppComponent, appComponent)
-import Effect.Uncurried (EffectFn1)
+import Effect (Effect)
+import Effect.Uncurried (mkEffectFn1)
 import React.Basic.DOM as DOM
-import React.Basic.Events (SyntheticEvent)
 import State.Todo (Todo)
 
 type Props
-  = { todo :: Todo, onChangeStatus :: EffectFn1 SyntheticEvent Unit }
+  = { todo :: Todo, onChangeStatus :: Boolean -> Effect Unit }
 
 mkTodo :: AppComponent Props
 mkTodo = do
@@ -23,7 +23,7 @@ mkTodo = do
                   [ DOM.input
                       { type: "checkbox"
                       , checked: todo.checked
-                      , onChange: onChangeStatus
+                      , onChange: mkEffectFn1 \_ -> onChangeStatus $ not todo.checked
                       }
                   ]
               , DOM.div_

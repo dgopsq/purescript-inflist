@@ -7,7 +7,7 @@ import App.Components.TodosList (mkTodosList)
 import App.Components.TodosListNav (mkTodosListNav)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
-import Data.List (fromFoldable, length, mapMaybe)
+import Data.List (fromFoldable, length)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
@@ -59,7 +59,7 @@ mkTodosListPage = do
         _ -> Nothing
 
       showedTodos = case maybeParent of
-        Just parent -> mapMaybe (\id -> lookup id todosMapState) parent.children
+        Just parent -> parent.children
         _ -> fromFoldable []
 
       computedTodosListNav = case (Tuple maybeParent maybePrevious) of

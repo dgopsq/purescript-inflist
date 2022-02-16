@@ -1,38 +1,33 @@
 module App.Components.TodosList where
 
 import Prelude
-import App.Components.Todo (mkTodo)
+import App.Components.ConnectedTodo (mkConnectedTodo)
 import AppComponent (AppComponent, appComponent)
 import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import React.Basic.DOM as DOM
-import React.Basic.Events (SyntheticEvent)
-import State.Todo (Todo, TodoId)
+import State.Todo (TodoId)
 
 type Props
-  = { todos :: List Todo
+  = { todos :: List TodoId
     , onTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
     }
 
 mkTodosList :: AppComponent Props
 mkTodosList = do
-  todo <- mkTodo
+  connectedTodo <- mkConnectedTodo
   appComponent "TodosList" \{ todos, onTodoChangeStatus } -> React.do
     let
-      handleTodoChangeStatus :: Todo -> EffectFn1 SyntheticEvent Unit
-      handleTodoChangeStatus t = mkEffectFn1 $ \_ -> onTodoChangeStatus t.id (not t.checked)
-
       maybeTodosArr =
         fromFoldable
           $ map
-              ( \t ->
+              ( \id ->
                   DOM.li_
-                    [ todo
-                        { todo: t
-                        , onChangeStatus: handleTodoChangeStatus t
+                    [ connectedTodo
+                        { id
+                        , onChangeStatus: onTodoChangeStatus id
                         }
                     ]
               )
