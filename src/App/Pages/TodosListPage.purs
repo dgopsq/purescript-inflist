@@ -13,9 +13,8 @@ import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
-import Effect.Console (log)
 import React.Basic.DOM as DOM
-import React.Basic.Hooks (useContext, useEffect)
+import React.Basic.Hooks (useContext)
 import React.Basic.Hooks as React
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
@@ -35,9 +34,6 @@ mkTodosListPage = do
   appComponent "TodosListPage" \{ parentId } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
-    useEffect parentId do
-      log $ "Parent ID: " <> parentId
-      mempty
     let
       handleTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
       handleTodoChangeStatus id status = case maybeTodo of
