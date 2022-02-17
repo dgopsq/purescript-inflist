@@ -41,8 +41,9 @@ mkConnectedTodo = do
               Just retrievedTodo -> liftEffect <<< dispatch $ loadTodo retrievedTodo
               _ -> pure unit
     -- Update the todo into the storage
-    -- FIXME: There is an incorrect call
-    -- in the very first render.
+    -- This hook will be triggered at the first
+    -- render too, causing and additional and useless
+    -- storage request.
     useAff (retrievedTodo /\ maybeTodo) do
       case (Tuple retrievedTodo maybeTodo) of
         (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo
