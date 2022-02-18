@@ -24,12 +24,15 @@ mkTodosList = do
         fromFoldable
           $ map
               ( \id ->
-                  DOM.li_
-                    [ connectedTodo
-                        { id
-                        , onChangeStatus: onTodoChangeStatus id
-                        }
-                    ]
+                  DOM.li
+                    { className: "mb-4"
+                    , children:
+                        [ connectedTodo
+                            { id
+                            , onChangeStatus: onTodoChangeStatus id
+                            }
+                        ]
+                    }
               )
               todos
 
