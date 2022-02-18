@@ -37,7 +37,7 @@ mkTodo = do
           { className: "bg-white py-2 px-4 rounded flex flex-row gap-x-3 items-center"
           , children:
               [ DOM.div
-                  { className: "basis-auto grow-0 shrink-0"
+                  { className: "basis-auto grow-0 shrink-0 flex items-center"
                   , children:
                       [ checkbox
                           { checked: todo.checked
