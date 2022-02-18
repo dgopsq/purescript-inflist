@@ -2,6 +2,7 @@ module App.Components.Todo where
 
 import Prelude
 import App.Components.Checkbox (mkCheckbox)
+import App.Components.Link (mkLink)
 import AppComponent (AppComponent, appComponent)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
@@ -21,6 +22,7 @@ type Props
 mkTodo :: AppComponent Props
 mkTodo = do
   checkbox <- mkCheckbox
+  link <- mkLink
   appComponent "Todo" \{ todo, onChange } -> React.do
     todoText /\ setTodoText <- useState todo.text
     debouncedTodoText <- useDebounce 300 todoText
@@ -52,6 +54,17 @@ mkTodo = do
                           , value: todoText
                           , onChange:
                               handler targetValue \value -> setTodoText \_ -> fromMaybe "" value
+                          }
+                      ]
+                  }
+              , DOM.div
+                  { className: "basis-auto grow-0 shrink-0"
+                  , children:
+                      [ link
+                          { route: "/" <> todo.id
+                          , children:
+                              [ DOM.i { className: "gg-external gg-normal text-slate-300", children: [] }
+                              ]
                           }
                       ]
                   }
