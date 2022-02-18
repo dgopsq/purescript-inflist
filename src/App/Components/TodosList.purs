@@ -6,19 +6,16 @@ import AppComponent (AppComponent, appComponent)
 import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)
-import Effect (Effect)
 import React.Basic.DOM as DOM
 import State.Todo (TodoId)
 
 type Props
-  = { todos :: List TodoId
-    , onTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
-    }
+  = { todos :: List TodoId }
 
 mkTodosList :: AppComponent Props
 mkTodosList = do
   connectedTodo <- mkConnectedTodo
-  appComponent "TodosList" \{ todos, onTodoChangeStatus } -> React.do
+  appComponent "TodosList" \{ todos } -> React.do
     let
       maybeTodosArr =
         fromFoldable
@@ -27,11 +24,7 @@ mkTodosList = do
                   DOM.li
                     { className: "mb-4"
                     , children:
-                        [ connectedTodo
-                            { id
-                            , onChangeStatus: onTodoChangeStatus id
-                            }
-                        ]
+                        [ connectedTodo { id } ]
                     }
               )
               todos

@@ -15,23 +15,24 @@ import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
-import State.Todo (TodoId)
-import State.TodosMapReducer (loadTodo)
+import State.Todo (TodoId, Todo)
+import State.TodosMapReducer (loadTodo, updateTodo)
 
 type Props
-  = { id :: TodoId
-    , onChangeStatus :: Boolean -> Effect Unit
-    }
+  = { id :: TodoId }
 
 mkConnectedTodo :: AppComponent Props
 mkConnectedTodo = do
   { store, todosStorage } <- ask
   todo <- mkTodo
-  appComponent "ConnectedTodo" \{ id, onChangeStatus } -> React.do
+  appComponent "ConnectedTodo" \{ id } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
     let
       maybeTodo = lookup id todosMapState
+
+      handleUpdate :: Todo -> Effect Unit
+      handleUpdate updatedTodo = dispatch $ updateTodo updatedTodo.id updatedTodo
     -- Retrieve from the storage the missing todo
     retrievedTodo <-
       map isJust
@@ -48,4 +49,4 @@ mkConnectedTodo = do
       case (Tuple retrievedTodo maybeTodo) of
         (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo
         _ -> pure unit
-    pure $ fromMaybe (DOM.div_ []) $ map (\t -> todo { todo: t, onChangeStatus }) maybeTodo
+    pure $ fromMaybe (DOM.div_ []) $ map (\t -> todo { todo: t, onChange: handleUpdate }) maybeTodo

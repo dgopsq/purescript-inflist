@@ -21,7 +21,7 @@ import React.Basic.Hooks.Aff (useAff)
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
 import State.Todo (TodoId, genUniqTodo)
-import State.TodosMapReducer (addTodo, loadTodo, updateTodo)
+import State.TodosMapReducer (addTodo, loadTodo)
 
 type Props
   = { parentId :: TodoId }
@@ -38,13 +38,6 @@ mkTodosListPage = do
     dispatch <- useContext store.dispatchContext
     let
       maybeParent = lookup parentId todosMapState
-
-      handleTodoChangeStatus :: TodoId -> Boolean -> Effect Unit
-      handleTodoChangeStatus id status = case maybeTodo of
-        Just todo -> dispatch $ updateTodo id (todo { checked = status })
-        _ -> pure unit
-        where
-        maybeTodo = lookup id todosMapState
 
       handleAdd :: String -> Effect Unit
       handleAdd text = do
@@ -98,10 +91,7 @@ mkTodosListPage = do
                   , DOM.div
                       { className: if length showedTodos > 0 then "mt-4" else ""
                       , children:
-                          [ todosList
-                              { todos: showedTodos
-                              , onTodoChangeStatus: handleTodoChangeStatus
-                              }
+                          [ todosList { todos: showedTodos }
                           ]
                       }
                   ]
