@@ -5,10 +5,11 @@ import App.Components.Checkbox (mkCheckbox)
 import AppComponent (AppComponent, appComponent)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
+import Misc.Hook.UseDebouncedEffect (useDebounce)
 import React.Basic.DOM as DOM
 import React.Basic.DOM.Events (targetValue)
 import React.Basic.Events (handler)
-import React.Basic.Hooks (useState, (/\))
+import React.Basic.Hooks (useEffect, useState, (/\))
 import React.Basic.Hooks as React
 import State.Todo (Todo)
 
@@ -22,9 +23,13 @@ mkTodo = do
   checkbox <- mkCheckbox
   appComponent "Todo" \{ todo, onChange } -> React.do
     todoText /\ setTodoText <- useState todo.text
+    debouncedTodoText <- useDebounce 300 todoText
     let
       handleChangeStatus :: Boolean -> Effect Unit
       handleChangeStatus updatedStatus = onChange (todo { checked = updatedStatus })
+    useEffect debouncedTodoText do
+      onChange (todo { text = todoText })
+      pure mempty
     pure
       $ DOM.div
           { className: "bg-white py-2 px-4 rounded flex flex-row gap-x-3 items-center"
