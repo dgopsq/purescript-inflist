@@ -7,7 +7,9 @@ import React.Basic.DOM as DOM
 import State.Todo (Todo, isRootTodo)
 
 type Props
-  = { parentTodo :: Todo, previousTodo :: Todo }
+  = { parentTodo :: Todo
+    , previousTodo :: Todo
+    }
 
 mkTodosListNav :: AppComponent Props
 mkTodosListNav = do
@@ -24,7 +26,7 @@ mkTodosListNav = do
 
       backLink = case isRoot of
         true -> []
-        false -> [ link { route: previousLink, text: "Back" } ]
+        false -> [ link { route: previousLink, children: [ DOM.text "Back" ] } ]
 
       title = case isRoot of
         true -> "Home"

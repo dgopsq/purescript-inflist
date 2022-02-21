@@ -1,6 +1,7 @@
 module State.Store where
 
 import Prelude
+import App.Foreign.UseContextSelector (createContextSelector)
 import Effect (Effect)
 import React.Basic (ReactContext, createContext)
 import State.RootReducer (RootAction, RootState, rootInitialState)
@@ -17,7 +18,7 @@ type Store
     }
 
 mkStateContext :: Effect StateContext
-mkStateContext = createContext rootInitialState
+mkStateContext = createContextSelector rootInitialState
 
 mkDispatchContext :: Effect DispatchContext
 mkDispatchContext = createContext (\_ -> do pure unit)

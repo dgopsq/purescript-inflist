@@ -1,11 +1,12 @@
 module State.Helpers where
 
 import Prelude
+import App.Foreign.UseContextSelector (UseContextSelector, useContextSelector)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
 import Data.Newtype (class Newtype)
 import React.Basic (JSX, ReactContext, provider)
-import React.Basic.Hooks (type (&), Hook, UseContext, UseEffect, UseState, coerceHook, mkReducer, useContext, useEffect, useReducer, useState, (/\))
+import React.Basic.Hooks (type (&), Hook, coerceHook, mkReducer, useReducer, (/\))
 import React.Basic.Hooks as React
 import State.RootReducer (RootState, RootAction)
 
@@ -24,19 +25,13 @@ mkStoreProvider initialState rootReducer = do
 useSelector :: forall b ctx. Eq ctx => ReactContext ctx -> (ctx -> b) -> Hook (UseSelector ctx b) b
 useSelector sc selector =
   coerceHook React.do
-    state <- useContext sc
-    selectedState /\ setSelectedState <- useState $ selector state
-    useEffect state do
-      setSelectedState \_ -> selector state
-      mempty
-    pure selectedState
+    state <- useContextSelector sc selector
+    pure state
 
 newtype UseSelector ctx b hooks
   = UseSelector
   ( hooks
-      & UseContext ctx
-      & UseState b
-      & UseEffect ctx
+      & UseContextSelector ctx b
   )
 
 derive instance newtypeUseSelector :: Newtype (UseSelector ctx b hooks) _
