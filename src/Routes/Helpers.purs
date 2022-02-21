@@ -6,12 +6,14 @@ import Control.Monad.Reader as Reader
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
+import Foreign (unsafeToForeign)
 import Partial.Unsafe as Partial.Unsafe
 import React.Basic (JSX)
 import React.Basic as React.Basic
 import React.Basic.Hooks (Hook, UseContext, (/\))
 import React.Basic.Hooks as React
 import Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appRoute)
+import Routing.PushState (PushStateInterface)
 import Routing.PushState as PushState
 
 -- | Initialize the Router context.
@@ -52,3 +54,7 @@ mkRouterProvider = do
         # PushState.matches appRoute \_ newRoute -> do
             setRoute newRoute
     pure (routerProvider (Just { nav, route }) children)
+
+-- | ...
+navigateTo :: PushStateInterface -> String -> Effect Unit
+navigateTo nav route = nav.pushState (unsafeToForeign {}) route

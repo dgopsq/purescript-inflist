@@ -10,9 +10,10 @@ import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import React.Basic.DOM as DOM
-import React.Basic.Hooks (useContext, (/\))
+import React.Basic.Hooks (useContext, useMemo, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
+import Routes.Helpers (navigateTo, useRouterContext)
 import State.Helpers (useSelector)
 import State.Selectors (todosMapSelector)
 import State.Todo (TodoId, Todo)
@@ -23,16 +24,22 @@ type Props
 
 mkConnectedTodo :: AppComponent Props
 mkConnectedTodo = do
-  { store, todosStorage } <- ask
-  todo <- mkTodo
+  { store, todosStorage, router } <- ask
+  todo <- liftEffect mkTodo
   appComponent "ConnectedTodo" \{ id } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
+    { nav } <- useRouterContext router.routerContext
     let
       maybeTodo = lookup id todosMapState
 
       handleUpdate :: Todo -> Effect Unit
       handleUpdate updatedTodo = dispatch $ updateTodo updatedTodo.id updatedTodo
+
+      handleOpen :: Todo -> Effect Unit
+      handleOpen todoToOpen = navigateTo nav $ "/" <> todoToOpen.id
+    memoizedHandleUpdate <- useMemo unit \_ -> handleUpdate
+    memoizedHandleOpen <- useMemo unit \_ -> handleOpen
     -- Retrieve from the storage the missing todo
     retrievedTodo <-
       map isJust
@@ -49,4 +56,13 @@ mkConnectedTodo = do
       case (Tuple retrievedTodo maybeTodo) of
         (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo
         _ -> pure unit
-    pure $ fromMaybe (DOM.div_ []) $ map (\t -> todo { todo: t, onChange: handleUpdate }) maybeTodo
+    pure $ fromMaybe (DOM.div_ [])
+      $ map
+          ( \t ->
+              React.element todo
+                { todo: t
+                , onChange: memoizedHandleUpdate
+                , onOpen: memoizedHandleOpen
+                }
+          )
+          maybeTodo

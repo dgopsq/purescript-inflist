@@ -30,7 +30,7 @@ mkTodosListPage :: AppComponent Props
 mkTodosListPage = do
   { store, todosStorage } <- ask
   todosList <- mkTodosList
-  addTodoInput <- mkAddTodoInput
+  addTodoInput <- liftEffect mkAddTodoInput
   layout <- mkLayout
   todosListNav <- mkTodosListNav
   appComponent "TodosListPage" \{ parentId } -> React.do
@@ -85,7 +85,7 @@ mkTodosListPage = do
                   , DOM.div
                       { className: "mt-4"
                       , children:
-                          [ addTodoInput { onAdd: handleAdd }
+                          [ React.element addTodoInput { onAdd: handleAdd }
                           ]
                       }
                   , DOM.div
