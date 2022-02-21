@@ -1,16 +1,16 @@
 module App.Components.Layout where
 
 import Prelude
-import AppComponent (AppComponent, appComponent)
 import React.Basic (JSX)
 import React.Basic.DOM as DOM
+import React.Basic.Hooks (Component, component)
 
 type Props
   = Array JSX
 
-mkLayout :: AppComponent Props
+mkLayout :: Component Props
 mkLayout =
-  appComponent "Layout" \children -> React.do
+  component "Layout" \children -> React.do
     pure
       $ DOM.div
           { className: "flex flex-row justify-center"

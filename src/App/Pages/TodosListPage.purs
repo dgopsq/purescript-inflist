@@ -6,7 +6,7 @@ import App.Components.Layout (mkLayout)
 import App.Components.TodosList (mkTodosList)
 import App.Components.TodosListNav (mkTodosListNav)
 import AppComponent (AppComponent, appComponent)
-import Control.Monad.Reader (ask)
+import Control.Monad.Reader (ask, lift)
 import Data.List (fromFoldable, length)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -31,7 +31,7 @@ mkTodosListPage = do
   { store, todosStorage } <- ask
   todosList <- mkTodosList
   addTodoInput <- liftEffect mkAddTodoInput
-  layout <- mkLayout
+  layout <- lift mkLayout
   todosListNav <- mkTodosListNav
   appComponent "TodosListPage" \{ parentId } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
