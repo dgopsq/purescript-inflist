@@ -25,6 +25,7 @@ to generate this file without the comments in this block.
   , "lists"
   , "maybe"
   , "newtype"
+  , "nullable"
   , "ordered-collections"
   , "partial"
   , "prelude"

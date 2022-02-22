@@ -38,8 +38,12 @@ mkConnectedTodo = do
 
       handleOpen :: Todo -> Effect Unit
       handleOpen todoToOpen = navigateTo nav $ "/" <> todoToOpen.id
+
+      handleDelete :: Todo -> Effect Unit
+      handleDelete _ = pure unit
     memoizedHandleUpdate <- useMemo unit \_ -> handleUpdate
     memoizedHandleOpen <- useMemo unit \_ -> handleOpen
+    memoizedHandleDelete <- useMemo unit \_ -> handleDelete
     -- Retrieve from the storage the missing todo
     retrievedTodo <-
       map isJust
@@ -63,6 +67,7 @@ mkConnectedTodo = do
                 { todo: t
                 , onChange: memoizedHandleUpdate
                 , onOpen: memoizedHandleOpen
+                , onDelete: memoizedHandleDelete
                 }
           )
           maybeTodo

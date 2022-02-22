@@ -11,6 +11,7 @@
     "spago": "^0.20.3"
   },
   "dependencies": {
+    "@mantine/hooks": "^3.6.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "scheduler": "^0.20.2",
