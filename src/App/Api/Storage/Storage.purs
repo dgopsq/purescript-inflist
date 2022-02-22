@@ -1,4 +1,4 @@
-module Api.Storage.Storage where
+module App.Api.Storage.Storage where
 
 import Prelude
 import Data.Maybe (Maybe)

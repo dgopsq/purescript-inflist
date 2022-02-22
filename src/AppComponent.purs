@@ -1,7 +1,7 @@
 module AppComponent where
 
 import Prelude
-import Api.Storage.Storage (TodosStorage)
+import App.Api.Storage.Storage (TodosStorage)
 import Control.Monad.Reader (ReaderT(..))
 import Effect (Effect)
 import React.Basic (JSX)

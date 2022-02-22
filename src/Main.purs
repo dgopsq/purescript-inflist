@@ -1,7 +1,7 @@
 module Main where
 
 import Prelude
-import Api.Storage.LocalStorage (localTodosStorage)
+import App.Api.Storage.LocalStorage (localTodosStorage)
 import App.Pages.NotFoundPage (mkNotFoundPage)
 import App.Pages.TodosListPage (mkTodosListPage)
 import AppComponent (AppComponent, appComponent)

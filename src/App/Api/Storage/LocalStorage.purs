@@ -1,9 +1,9 @@
-module Api.Storage.LocalStorage
+module App.Api.Storage.LocalStorage
   ( localTodosStorage
   ) where
 
 import Prelude
-import Api.Storage.Storage (TodoStoreFn, TodosStorage, TodoRetrieveFn)
+import App.Api.Storage.Storage (TodoStoreFn, TodosStorage, TodoRetrieveFn)
 import Data.Argonaut (parseJson, stringify)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..))
