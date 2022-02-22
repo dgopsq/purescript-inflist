@@ -13,7 +13,7 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
-import Misc.Hook.UsePrev (usePrev)
+import App.Misc.Hook.UsePrev (usePrev)
 import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext, (/\))
 import React.Basic.Hooks as React

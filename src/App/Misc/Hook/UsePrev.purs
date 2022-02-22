@@ -1,4 +1,4 @@
-module Misc.Hook.UsePrev where
+module App.Misc.Hook.UsePrev where
 
 import Prelude
 import Data.Maybe (Maybe(..), fromMaybe)

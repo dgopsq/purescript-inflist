@@ -1,4 +1,4 @@
-module Misc.Codecs where
+module App.Misc.Codecs where
 
 import Data.Argonaut (Json, JsonDecodeError, decodeJson, encodeJson)
 import Data.Either (Either)

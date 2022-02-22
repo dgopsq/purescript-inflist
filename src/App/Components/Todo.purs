@@ -5,7 +5,7 @@ import App.Components.Checkbox (mkCheckbox)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
 import Effect.Console (log)
-import Misc.Hook.UseDebouncedEffect (useDebounce)
+import App.Misc.Hook.UseDebouncedEffect (useDebounce)
 import React.Basic.DOM as DOM
 import React.Basic.DOM.Events (targetValue)
 import React.Basic.Events (handler, handler_)

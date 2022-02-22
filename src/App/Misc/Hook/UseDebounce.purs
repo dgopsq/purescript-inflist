@@ -1,4 +1,4 @@
-module Misc.Hook.UseDebouncedEffect where
+module App.Misc.Hook.UseDebouncedEffect where
 
 import Prelude
 import Control.Monad.ST.Class (liftST)
