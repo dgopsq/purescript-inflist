@@ -7,7 +7,7 @@ import React.Basic.DOM as DOM
 import React.Basic.DOM.Events (capture_)
 import React.Basic.Hooks (JSX)
 import React.Basic.Hooks as React
-import Routes.Helpers (navigateTo, useRouterContext)
+import App.Routes.Helpers (navigateTo, useRouterContext)
 
 mkLink :: AppComponent { route :: String, children :: Array JSX }
 mkLink = do

@@ -1,4 +1,4 @@
-module Routes where
+module App.Routes where
 
 import Prelude
 import Data.Foldable as Foldable

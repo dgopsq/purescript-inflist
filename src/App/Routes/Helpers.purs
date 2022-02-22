@@ -1,4 +1,4 @@
-module Routes.Helpers where
+module App.Routes.Helpers where
 
 import Prelude
 import AppComponent (AppComponent, appComponent)
@@ -12,7 +12,7 @@ import React.Basic (JSX)
 import React.Basic as React.Basic
 import React.Basic.Hooks (Hook, UseContext, (/\))
 import React.Basic.Hooks as React
-import Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appRoute)
+import App.Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appRoute)
 import Routing.PushState (PushStateInterface)
 import Routing.PushState as PushState
 
