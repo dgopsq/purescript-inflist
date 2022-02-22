@@ -1,4 +1,4 @@
-module State.Todo where
+module App.State.Todo where
 
 import Prelude
 import Data.List (List, fromFoldable)

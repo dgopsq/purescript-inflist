@@ -1,8 +1,8 @@
-module State.RootReducer where
+module App.State.RootReducer where
 
 import Data.Variant (Variant, match)
-import State.TodosMapReducer as TodosMap
-import State.ToggleReducer as Toggle
+import App.State.TodosMapReducer as TodosMap
+import App.State.ToggleReducer as Toggle
 
 type RootAction
   = Variant

@@ -7,7 +7,7 @@ import React.Basic (ReactContext)
 import Routing.Match (Match)
 import Routing.Match as Match
 import Routing.PushState (PushStateInterface)
-import State.Todo (TodoId)
+import App.State.Todo (TodoId)
 
 -- | The App routes structure.
 data AppRoute

@@ -1,8 +1,8 @@
-module State.Selectors where
+module App.State.Selectors where
 
-import State.RootReducer (RootState)
-import State.TodosMapReducer (TodosMapState)
-import State.ToggleReducer (ToggleState)
+import App.State.RootReducer (RootState)
+import App.State.TodosMapReducer (TodosMapState)
+import App.State.ToggleReducer (ToggleState)
 
 toggleSelector :: RootState -> ToggleState
 toggleSelector state = state.toggle

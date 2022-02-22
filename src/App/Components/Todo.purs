@@ -11,7 +11,7 @@ import React.Basic.DOM.Events (targetValue)
 import React.Basic.Events (handler, handler_)
 import React.Basic.Hooks (memo, useEffect, useEffectAlways, useState, (/\))
 import React.Basic.Hooks as React
-import State.Todo (Todo)
+import App.State.Todo (Todo)
 
 type Props
   = { todo :: Todo

@@ -14,10 +14,10 @@ import React.Basic.Hooks (useContext, useMemo, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
 import App.Routes.Helpers (navigateTo, useRouterContext)
-import State.Helpers (useSelector)
-import State.Selectors (todosMapSelector)
-import State.Todo (TodoId, Todo)
-import State.TodosMapReducer (loadTodo, updateTodo)
+import App.State.Helpers (useSelector)
+import App.State.Selectors (todosMapSelector)
+import App.State.Todo (TodoId, Todo)
+import App.State.TodosMapReducer (loadTodo, updateTodo)
 
 type Props
   = { id :: TodoId }

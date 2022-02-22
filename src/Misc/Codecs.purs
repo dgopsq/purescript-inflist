@@ -2,7 +2,7 @@ module Misc.Codecs where
 
 import Data.Argonaut (Json, JsonDecodeError, decodeJson, encodeJson)
 import Data.Either (Either)
-import State.Todo (Todo)
+import App.State.Todo (Todo)
 
 todoToJson :: Todo -> Json
 todoToJson = encodeJson

@@ -8,7 +8,7 @@ import React.Basic (JSX)
 import React.Basic.Hooks (Render)
 import React.Basic.Hooks as React
 import App.Routes (Router)
-import State.Store (Store)
+import App.State.Store (Store)
 
 -- | The Record used for the DI.
 type AppComponentEnv

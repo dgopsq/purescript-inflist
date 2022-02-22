@@ -18,10 +18,10 @@ import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
-import State.Helpers (useSelector)
-import State.Selectors (todosMapSelector)
-import State.Todo (TodoId, genUniqTodo)
-import State.TodosMapReducer (addTodo, loadTodo)
+import App.State.Helpers (useSelector)
+import App.State.Selectors (todosMapSelector)
+import App.State.Todo (TodoId, genUniqTodo)
+import App.State.TodosMapReducer (addTodo, loadTodo)
 
 type Props
   = { parentId :: TodoId }

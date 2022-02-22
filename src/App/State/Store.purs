@@ -1,10 +1,10 @@
-module State.Store where
+module App.State.Store where
 
 import Prelude
 import App.Foreign.UseContextSelector (createContextSelector)
 import Effect (Effect)
 import React.Basic (ReactContext, createContext)
-import State.RootReducer (RootAction, RootState, rootInitialState)
+import App.State.RootReducer (RootAction, RootState, rootInitialState)
 
 type StateContext
   = ReactContext RootState

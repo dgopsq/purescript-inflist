@@ -1,4 +1,4 @@
-module State.TodosMapReducer where
+module App.State.TodosMapReducer where
 
 import Prelude
 import Data.List (snoc)
@@ -6,7 +6,7 @@ import Data.Map (Map, fromFoldable, insert, lookup)
 import Data.Maybe (Maybe(..))
 import Data.String (length)
 import Data.Variant (Variant, inj)
-import State.Todo (Todo, TodoId, rootTodoTuple)
+import App.State.Todo (Todo, TodoId, rootTodoTuple)
 import Type.Proxy (Proxy(..))
 
 type TodosMapState

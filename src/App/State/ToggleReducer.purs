@@ -1,4 +1,4 @@
-module State.ToggleReducer where
+module App.State.ToggleReducer where
 
 import Prelude
 import Data.Variant (Variant, inj)

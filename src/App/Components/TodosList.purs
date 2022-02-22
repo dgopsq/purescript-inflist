@@ -7,7 +7,7 @@ import Data.Array.NonEmpty (fromFoldable, toArray)
 import Data.List (List)
 import Data.Maybe (fromMaybe)
 import React.Basic.DOM as DOM
-import State.Todo (TodoId)
+import App.State.Todo (TodoId)
 
 type Props
   = { todos :: List TodoId }

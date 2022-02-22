@@ -3,7 +3,7 @@ module App.Api.Storage.Storage where
 import Prelude
 import Data.Maybe (Maybe)
 import Effect.Aff (Aff)
-import State.Todo (Todo, TodoId)
+import App.State.Todo (Todo, TodoId)
 
 type TodoStoreFn
   = TodoId -> Todo -> Aff Unit

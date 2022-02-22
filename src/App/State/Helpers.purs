@@ -1,4 +1,4 @@
-module State.Helpers where
+module App.State.Helpers where
 
 import Prelude
 import App.Foreign.UseContextSelector (UseContextSelector, useContextSelector)
@@ -8,7 +8,7 @@ import Data.Newtype (class Newtype)
 import React.Basic (JSX, ReactContext, provider)
 import React.Basic.Hooks (type (&), Hook, coerceHook, mkReducer, useReducer, (/\))
 import React.Basic.Hooks as React
-import State.RootReducer (RootState, RootAction)
+import App.State.RootReducer (RootState, RootAction)
 
 mkStoreProvider :: RootState -> (RootState -> RootAction -> RootState) -> AppComponent (Array JSX)
 mkStoreProvider initialState rootReducer = do

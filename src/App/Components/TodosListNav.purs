@@ -4,7 +4,7 @@ import Prelude
 import App.Components.Link (mkLink)
 import AppComponent (AppComponent, appComponent)
 import React.Basic.DOM as DOM
-import State.Todo (Todo, isRootTodo)
+import App.State.Todo (Todo, isRootTodo)
 
 type Props
   = { parentTodo :: Todo
