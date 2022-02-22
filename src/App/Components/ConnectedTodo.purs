@@ -2,22 +2,23 @@ module App.Components.ConnectedTodo where
 
 import Prelude
 import App.Components.Todo (mkTodo)
+import App.Routes.Helpers (navigateTo, useRouterContext)
+import App.State.Helpers (useSelector)
+import App.State.Selectors (todosMapSelector)
+import App.State.Todo (TodoId, Todo)
+import App.State.TodosMapReducer (deleteTodo, loadTodo, updateTodo)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
+import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext, useMemo, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
-import App.Routes.Helpers (navigateTo, useRouterContext)
-import App.State.Helpers (useSelector)
-import App.State.Selectors (todosMapSelector)
-import App.State.Todo (TodoId, Todo)
-import App.State.TodosMapReducer (loadTodo, updateTodo)
 
 type Props
   = { id :: TodoId }
@@ -40,7 +41,10 @@ mkConnectedTodo = do
       handleOpen todoToOpen = navigateTo nav $ "/" <> todoToOpen.id
 
       handleDelete :: Todo -> Effect Unit
-      handleDelete _ = pure unit
+      handleDelete todoToDelete = do
+        _ <- dispatch $ deleteTodo todoToDelete
+        _ <- launchAff_ $ todosStorage.delete todoToDelete.id
+        pure unit
     memoizedHandleUpdate <- useMemo unit \_ -> handleUpdate
     memoizedHandleOpen <- useMemo unit \_ -> handleOpen
     memoizedHandleDelete <- useMemo unit \_ -> handleDelete

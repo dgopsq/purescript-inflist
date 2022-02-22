@@ -1,12 +1,12 @@
 module App.State.TodosMapReducer where
 
 import Prelude
-import Data.List (snoc)
-import Data.Map (Map, fromFoldable, insert, lookup)
+import App.State.Todo (Todo, TodoId, rootTodoTuple)
+import Data.List as L
+import Data.Map (Map, fromFoldable, insert, lookup, delete)
 import Data.Maybe (Maybe(..))
 import Data.String (length)
 import Data.Variant (Variant, inj)
-import App.State.Todo (Todo, TodoId, rootTodoTuple)
 import Type.Proxy (Proxy(..))
 
 type TodosMapState
@@ -16,6 +16,7 @@ data TodosMapAction
   = AddTodo Todo
   | UpdateTodo TodoId Todo
   | LoadTodo Todo
+  | DeleteTodo Todo
 
 todosMapInitialState :: TodosMapState
 todosMapInitialState = fromFoldable [ rootTodoTuple ]
@@ -26,7 +27,7 @@ todosMapReducer state (AddTodo todo)
     Just parent ->
       insert parent.id
         ( parent
-            { children = snoc parent.children todo.id
+            { children = L.snoc parent.children todo.id
             }
         )
         stateWithAddedTodo
@@ -45,6 +46,20 @@ todosMapReducer state (UpdateTodo todoId newTodo) = case maybeTodo of
 
 todosMapReducer state (LoadTodo todo) = insert todo.id todo state
 
+todosMapReducer state (DeleteTodo todo) = case maybeParent of
+  Just parent ->
+    insert parent.id
+      ( parent
+          { children = L.delete todo.id parent.children
+          }
+      )
+      stateWithDeletedTodo
+  _ -> state
+  where
+  maybeParent = lookup todo.parent state
+
+  stateWithDeletedTodo = delete todo.id state
+
 type TodosMapAction' v
   = ( todosMap :: TodosMapAction | v )
 
@@ -59,3 +74,6 @@ updateTodo todoId newTodo = injAction (UpdateTodo todoId newTodo)
 
 loadTodo :: forall v. Todo -> Variant (TodosMapAction' v)
 loadTodo = injAction <<< LoadTodo
+
+deleteTodo :: forall v. Todo -> Variant (TodosMapAction' v)
+deleteTodo = injAction <<< DeleteTodo

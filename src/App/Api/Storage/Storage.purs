@@ -11,7 +11,11 @@ type TodoStoreFn
 type TodoRetrieveFn
   = TodoId -> Aff (Maybe Todo)
 
+type TodoDeleteFn
+  = TodoId -> Aff Unit
+
 type TodosStorage
   = { store :: TodoStoreFn
     , retrieve :: TodoRetrieveFn
+    , delete :: TodoDeleteFn
     }

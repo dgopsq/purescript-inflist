@@ -22,7 +22,8 @@ mkTodosList = do
           $ map
               ( \id ->
                   DOM.li
-                    { className: "mb-4"
+                    { key: id
+                    , className: "mb-4"
                     , children:
                         [ connectedTodo { id } ]
                     }
