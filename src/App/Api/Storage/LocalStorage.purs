@@ -6,7 +6,7 @@ import Prelude
 import App.Api.Storage.Storage (TodoRetrieveFn, TodoStoreFn, TodosStorage, TodoDeleteFn)
 import App.Misc.Codecs (todoFromJson, todoToJson)
 import Data.Argonaut (parseJson, stringify)
-import Data.Either (hush)
+import Data.Either (Either(..), hush)
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
@@ -42,24 +42,27 @@ localStorageDelete key =
 store :: TodoStoreFn
 store todoId todo = do
   _ <- liftEffect $ log ("Stored todo " <> show todo)
-  localStorageStore todoId encodedtodo
+  _ <- localStorageStore todoId encodedtodo
+  pure $ Right unit
   where
   encodedtodo = stringify $ todoToJson todo
 
 retrieve :: TodoRetrieveFn
 retrieve todoId = do
   maybeRetrieved <- localStorageRetrieve todoId
-  case maybeRetrieved of
+  result <- case maybeRetrieved of
     Just retrieved -> do
       parsed <- pure $ hush (todoFromJson =<< parseJson retrieved)
       _ <- liftEffect $ log ("Retrieved todo " <> show parsed)
       pure parsed
     _ -> pure Nothing
+  pure $ Right result
 
 delete :: TodoDeleteFn
 delete todoId = do
   _ <- liftEffect $ log ("Deleted todo " <> todoId)
-  localStorageDelete todoId
+  _ <- localStorageDelete todoId
+  pure $ Right unit
 
 localTodosStorage :: TodosStorage
 localTodosStorage =

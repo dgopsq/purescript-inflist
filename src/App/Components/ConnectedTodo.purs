@@ -9,6 +9,7 @@ import App.State.Todo (TodoId, Todo)
 import App.State.TodosMapReducer (deleteTodo, loadTodo, updateTodo)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask)
+import Data.Either (Either(..))
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Tuple (Tuple(..))
@@ -52,18 +53,15 @@ mkConnectedTodo = do
     retrievedTodo <-
       map isJust
         $ useAff id do
-            maybeRetrievedTodo <- todosStorage.retrieve id
-            case maybeRetrievedTodo of
-              Just retrievedTodo -> liftEffect <<< dispatch $ loadTodo retrievedTodo
+            eitherRetrievedTodo <- todosStorage.retrieve id
+            case eitherRetrievedTodo of
+              Right (Just retrievedTodo) -> liftEffect <<< dispatch $ loadTodo retrievedTodo
               _ -> pure unit
-    -- Update the todo into the storage
-    -- This hook will be triggered at the first
-    -- render too, causing and additional and useless
-    -- storage request.
+    -- Update the todo into the storage.
     useAff (retrievedTodo /\ maybeTodo) do
       case (Tuple retrievedTodo maybeTodo) of
         (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo
-        _ -> pure unit
+        _ -> pure (Right unit)
     pure $ fromMaybe (DOM.div_ [])
       $ map
           ( \t ->

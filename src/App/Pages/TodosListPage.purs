@@ -5,23 +5,24 @@ import App.Components.AddTodoInput (mkAddTodoInput)
 import App.Components.Layout (mkLayout)
 import App.Components.TodosList (mkTodosList)
 import App.Components.TodosListNav (mkTodosListNav)
+import App.Misc.Hook.UsePrev (usePrev)
+import App.State.Helpers (useSelector)
+import App.State.Selectors (todosMapSelector)
+import App.State.Todo (TodoId, genUniqTodo)
+import App.State.TodosMapReducer (addTodo, loadTodo)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
+import Data.Either (Either(..))
 import Data.List (fromFoldable, length)
 import Data.Map (lookup)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
-import App.Misc.Hook.UsePrev (usePrev)
 import React.Basic.DOM as DOM
 import React.Basic.Hooks (useContext, (/\))
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (useAff)
-import App.State.Helpers (useSelector)
-import App.State.Selectors (todosMapSelector)
-import App.State.Todo (TodoId, genUniqTodo)
-import App.State.TodosMapReducer (addTodo, loadTodo)
 
 type Props
   = { parentId :: TodoId }
@@ -62,9 +63,9 @@ mkTodosListPage = do
     -- This is used to retrieve the parent
     -- from the storage.
     useAff parentId do
-      maybeRetrievedParentTodo <- todosStorage.retrieve parentId
-      case maybeRetrievedParentTodo of
-        Just retrievedParentTodo -> liftEffect <<< dispatch $ loadTodo retrievedParentTodo
+      eitherRetrievedParentTodo <- todosStorage.retrieve parentId
+      case eitherRetrievedParentTodo of
+        Right (Just retrievedParentTodo) -> liftEffect <<< dispatch $ loadTodo retrievedParentTodo
         _ -> pure unit
     -- This is used to synchronize the
     -- root todo with the storage.
@@ -74,8 +75,8 @@ mkTodosListPage = do
           if prevParent /= parent then
             todosStorage.store parent.id parent
           else
-            pure unit
-        _ -> pure unit
+            pure (Right unit)
+        _ -> pure (Right unit)
     pure
       $ layout
           [ DOM.div
