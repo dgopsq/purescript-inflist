@@ -3,8 +3,8 @@ module App.Pages.TodosListPage where
 import Prelude
 import App.Components.AddTodoInput (mkAddTodoInput)
 import App.Components.Layout (mkLayout)
+import App.Components.Navbar (mkNavbar)
 import App.Components.TodosList (mkTodosList)
-import App.Components.TodosListNav (mkTodosListNav)
 import App.Misc.Hook.UsePrev (usePrev)
 import App.State.Helpers (useSelector)
 import App.State.Selectors (todosMapSelector)
@@ -33,7 +33,7 @@ mkTodosListPage = do
   todosList <- mkTodosList
   addTodoInput <- liftEffect mkAddTodoInput
   layout <- lift mkLayout
-  todosListNav <- mkTodosListNav
+  navbar <- mkNavbar
   appComponent "TodosListPage" \{ parentId } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
@@ -45,20 +45,7 @@ mkTodosListPage = do
         newTodo <- genUniqTodo parentId text false
         dispatch $ addTodo newTodo
 
-      maybePrevious = case maybeParent of
-        Just parent -> lookup parent.parent todosMapState
-        _ -> Nothing
-
       showedTodos = fromMaybe (fromFoldable []) $ map _.children maybeParent
-
-      computedTodosListNav = case (Tuple maybeParent maybePrevious) of
-        (Tuple (Just parent) (Just previous)) ->
-          [ todosListNav
-              { parentTodo: parent
-              , previousTodo: previous
-              }
-          ]
-        _ -> []
     prevMaybeParent <- fromMaybe Nothing <$> usePrev maybeParent
     -- This is used to retrieve the parent
     -- from the storage.
@@ -78,23 +65,25 @@ mkTodosListPage = do
             pure (Right unit)
         _ -> pure (Right unit)
     pure
-      $ layout
-          [ DOM.div
-              { className: "pt-40"
-              , children:
-                  [ DOM.div_ computedTodosListNav
-                  , DOM.div
-                      { className: "mt-4"
-                      , children:
-                          [ React.element addTodoInput { onAdd: handleAdd }
-                          ]
-                      }
-                  , DOM.div
-                      { className: if length showedTodos > 0 then "mt-4" else ""
-                      , children:
-                          [ todosList { todos: showedTodos }
-                          ]
-                      }
-                  ]
-              }
+      $ DOM.div_
+          [ navbar { parentId }
+          , layout
+              [ DOM.div
+                  { className: "pt-10"
+                  , children:
+                      [ DOM.div
+                          { className: "mt-4"
+                          , children:
+                              [ React.element addTodoInput { onAdd: handleAdd }
+                              ]
+                          }
+                      , DOM.div
+                          { className: if length showedTodos > 0 then "mt-4" else ""
+                          , children:
+                              [ todosList { todos: showedTodos }
+                              ]
+                          }
+                      ]
+                  }
+              ]
           ]
