@@ -16,7 +16,7 @@ import Control.Monad.Reader (ask, lift)
 import Data.Either (Either(..))
 import Data.List (List(..), length)
 import Data.Map (lookup)
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Class (liftEffect)
@@ -65,8 +65,12 @@ mkTodosListPage = do
     -- is used in the breadcrump nav.
     useAff maybeParent do
       eitherRetrievedPreviousTodo <- case maybeParent of
-        Just { parent } -> todosStorage.retrieve parent
-        _ -> pure $ Left "Previous todo do not exists"
+        Just { parent } -> do
+          isPreviousLoaded <- pure <<< isJust $ lookup parent todosMapState
+          case isPreviousLoaded of
+            false -> todosStorage.retrieve parent
+            true -> pure $ Left "Previous todo already loaded"
+        _ -> pure $ Left "Parent todo do not exists"
       case eitherRetrievedPreviousTodo of
         Right (Just retrievedPreviousTodo) -> liftEffect <<< dispatch $ loadTodo retrievedPreviousTodo
         _ -> pure unit
