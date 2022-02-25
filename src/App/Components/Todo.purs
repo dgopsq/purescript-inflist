@@ -75,7 +75,7 @@ mkTodo =
                             { className: "basis-full grow shrink"
                             , children:
                                 [ DOM.input
-                                    { className: "w-full"
+                                    { className: "w-full outline-indigo-300"
                                     , type: "text"
                                     , value: todoText
                                     , onChange:
