@@ -29,7 +29,7 @@ mkBreadcrumb = do
     renderRoot :: JSX
     renderRoot =
       link
-        { route: "/" <> rootTodoId
+        { route: "/"
         , children:
             [ DOM.span
                 { className: "text-indigo-500 text-sm flex flex-row"
