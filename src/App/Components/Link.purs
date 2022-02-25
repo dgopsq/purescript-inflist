@@ -9,7 +9,12 @@ import React.Basic.Hooks (JSX)
 import React.Basic.Hooks as React
 import App.Routes.Helpers (navigateTo, useRouterContext)
 
-mkLink :: AppComponent { route :: String, children :: Array JSX }
+type Props
+  = { route :: String
+    , children :: Array JSX
+    }
+
+mkLink :: AppComponent Props
 mkLink = do
   { router } <- ask
   appComponent "Link" \{ route, children } -> React.do

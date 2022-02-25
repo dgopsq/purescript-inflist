@@ -1,7 +1,7 @@
 module App.State.Todo where
 
 import Prelude
-import Data.List (List, fromFoldable)
+import Data.List (List(..))
 import Data.Tuple (Tuple(..))
 import Data.UUID (genUUID, toString)
 import Effect (Effect)
@@ -20,7 +20,7 @@ type Todo
 mkTodo :: TodoId -> TodoId -> String -> Boolean -> Todo
 mkTodo parentId id text checked = { id, text, checked, parent: parentId, children }
   where
-  children = fromFoldable []
+  children = Nil
 
 genUniqTodo :: TodoId -> String -> Boolean -> Effect Todo
 genUniqTodo parentId text checked = do
