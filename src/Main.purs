@@ -23,6 +23,12 @@ import Web.HTML (window)
 import Web.HTML.HTMLDocument (toNonElementParentNode)
 import Web.HTML.Window (document)
 
+-- | This is the application's entry point. All the
+-- | dependencies are going to be defined and injected
+-- | to be used deep into the application's logic.
+-- | In this function the actual wiring between React and
+-- | the HTML DOM will be executed using the element with the
+-- | id equal to "root".
 main :: Effect Unit
 main = do
   root <- getElementById "root" =<< (map toNonElementParentNode $ document =<< window)
@@ -40,8 +46,9 @@ main = do
       app <- runReaderT mkApp env
       render (routerProvider [ storeProvider [ app unit ] ]) r
 
--- | The main application component
--- | managing all the internal routes.
+-- | This is the application's main component.
+-- | Here all the routes will be wired with the relative
+-- | components.
 mkApp :: AppComponent Unit
 mkApp = do
   { router } <- ask
