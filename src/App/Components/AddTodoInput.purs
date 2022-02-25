@@ -36,7 +36,7 @@ mkAddTodoInput =
       pure
         $ DOM.input
             { type: "text"
-            , className: "bg-white border border-indigo-100 py-3 px-5 rounded w-full outline-indigo-300"
+            , className: "bg-white border border-indigo-100 py-3 px-5 rounded w-full outline-indigo-300 placeholder:text-indigo-300"
             , placeholder: "New todo..."
             , autoFocus: true
             , value
