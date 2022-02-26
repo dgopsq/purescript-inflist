@@ -9,18 +9,36 @@ import Data.String (length)
 import Data.Variant (Variant, inj)
 import Type.Proxy (Proxy(..))
 
+-- | The data structure describing the `TodosMap` state.
+-- | Each Todo is indexed by its TodoId and this is the
+-- | "database" in which all the Todo will be store in memory.
 type TodosMapState
   = Map TodoId Todo
 
+-- | The actions usable on the `TodosMap` state.
+-- |
+-- |  1.  `AddTodo`: This action inserts a new Todo inside
+-- |      the `TodosMap` state handling the wiring with its
+-- |      Parent Todo.
+-- |  2.  `UpdateTodo`: Update a Todo, replacing it with a new
+-- |      Todo provided through this action.
+-- |  3.  `LoadTodo`: Load a Todo inside the `TodosMap` state.
+-- |      This is like `AddTodo` but it won't handle all the other
+-- |      wiring procedures. This should be used to load Todos
+-- |      from the storage service used.
+-- |  4.  `DeleteTodo`: Delete a Todo from the `TodosMap` state.
 data TodosMapAction
   = AddTodo Todo
   | UpdateTodo TodoId Todo
   | LoadTodo Todo
   | DeleteTodo Todo
 
+-- | The `TodosMap` initial state.
 todosMapInitialState :: TodosMapState
 todosMapInitialState = fromFoldable [ rootTodoTuple ]
 
+-- | The reducer function handling all the action's logic
+-- | for the `TodosMap` state.
 todosMapReducer :: TodosMapState -> TodosMapAction -> TodosMapState
 todosMapReducer state (AddTodo todo)
   | length todo.text > 0 = case maybeParent of
@@ -60,6 +78,11 @@ todosMapReducer state (DeleteTodo todo) = case maybeParent of
 
   stateWithDeletedTodo = delete todo.id state
 
+-- | This is a helper type used to better manage each 
+-- | single action for this reducer. 
+-- | Using https://github.com/natefaubion/purescript-variant it's
+-- | possible to "pattern match" all the application's actions
+-- | separated in different files and sum types.
 type TodosMapAction' v
   = ( todosMap :: TodosMapAction | v )
 
