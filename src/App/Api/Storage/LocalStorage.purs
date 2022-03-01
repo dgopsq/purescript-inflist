@@ -15,6 +15,8 @@ import Web.HTML (window)
 import Web.HTML.Window (localStorage)
 import Web.Storage.Storage (getItem, removeItem, setItem)
 
+-- | Execute the store operation in the
+-- | Local Storage.
 localStorageStore :: String -> String -> Aff Unit
 localStorageStore key value =
   liftEffect
@@ -23,6 +25,8 @@ localStorageStore key value =
         s <- localStorage w
         setItem key value s
 
+-- | Execute the retrieve operation in the
+-- | Local Storage.
 localStorageRetrieve :: String -> Aff (Maybe String)
 localStorageRetrieve key =
   liftEffect
@@ -31,6 +35,8 @@ localStorageRetrieve key =
         s <- localStorage w
         getItem key s
 
+-- | Execute the delete operation in the
+-- | Local Storage.
 localStorageDelete :: String -> Aff Unit
 localStorageDelete key =
   liftEffect
@@ -39,6 +45,8 @@ localStorageDelete key =
         s <- localStorage w
         removeItem key s
 
+-- | Implement the `TodoStoreFn` using the
+-- | Local Storage as the storage system.
 store :: TodoStoreFn
 store todoId todo = do
   _ <- liftEffect $ log ("Stored todo " <> show todo)
@@ -47,6 +55,8 @@ store todoId todo = do
   where
   encodedtodo = stringify $ todoToJson todo
 
+-- | Implement the `TodoRetrieveFn` using the
+-- | Local Storage as the storage system.
 retrieve :: TodoRetrieveFn
 retrieve todoId = do
   maybeRetrieved <- localStorageRetrieve todoId
@@ -58,12 +68,16 @@ retrieve todoId = do
     _ -> pure Nothing
   pure $ Right result
 
+-- | Implement the `TodoDeleteFn` using the
+-- | Local Storage as the storage system.
 delete :: TodoDeleteFn
 delete todoId = do
   _ <- liftEffect $ log ("Deleted todo " <> todoId)
   _ <- localStorageDelete todoId
   pure $ Right unit
 
+-- | Implement the `TodosStorage` interface using
+-- | the Local Storage as the storage system.
 localTodosStorage :: TodosStorage
 localTodosStorage =
   { store
