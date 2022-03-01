@@ -28,6 +28,10 @@ import React.Basic.Hooks.Aff (useAff)
 type Props
   = { parentId :: TodoId }
 
+-- | The component that will render a list of Todos
+-- | based on the parent Todo given.
+-- | This is the "main" application's page which is
+-- | used for both the "homepage" and the single Todo page.
 mkTodosListPage :: AppComponent Props
 mkTodosListPage = do
   { store, todosStorage } <- ask
@@ -53,16 +57,21 @@ mkTodosListPage = do
         (Tuple true (Just currentTodo)) -> breadcrumb { currentTodo }
         _ -> DOM.div_ []
     prevMaybeParent <- fromMaybe Nothing <$> usePrev maybeParent
-    -- This is used to retrieve the parent
-    -- from the storage.
+    -- This  hook is used to retrieve the parent
+    -- Todo from the storage.
+    -- At the application's first render this hook
+    -- will be triggered synchronizing the in-memory
+    -- parent Todo with the stored one.
     useAff parentId do
       eitherRetrievedParentTodo <- todosStorage.retrieve parentId
       case eitherRetrievedParentTodo of
         Right (Just retrievedParentTodo) -> liftEffect <<< dispatch $ loadTodo retrievedParentTodo
         _ -> pure unit
-    -- This is used to retrieve the previous
-    -- todo, if it exists. The previous todo 
-    -- is used in the breadcrump nav.
+    -- This hook is used to retrieve the previous
+    -- todo, if it exists.
+    -- The previous Todo is the "parent's parent" and
+    -- it is used in the breadcrumb menu to track the
+    -- position inside the nested Todos.
     useAff maybeParent do
       eitherRetrievedPreviousTodo <- case maybeParent of
         Just { parent } -> do
@@ -74,8 +83,11 @@ mkTodosListPage = do
       case eitherRetrievedPreviousTodo of
         Right (Just retrievedPreviousTodo) -> liftEffect <<< dispatch $ loadTodo retrievedPreviousTodo
         _ -> pure unit
-    -- This is used to synchronize the
-    -- root todo with the storage.
+    -- Here the root todo will be updated inside the storage
+    -- if, and only if there was a change.
+    -- Using the previous version of the parent in the
+    -- dependencies, and comparing it later will assure that
+    -- the hook won't be triggered on the very first render.
     useAff (prevMaybeParent /\ maybeParent) do
       case (Tuple prevMaybeParent maybeParent) of
         (Tuple (Just prevParent) (Just parent)) ->
