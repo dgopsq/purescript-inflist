@@ -8,6 +8,10 @@ import React.Basic.Hooks (type (&), Hook, UseEffect, UseRef, coerceHook, readRef
 import React.Basic.Hooks as React
 import React.Basic.Hooks.Aff (UseAff, useAff)
 
+-- | This hook will store the "previous" value of
+-- | a variable. This is useful to check if a value
+-- | has actually changed in hooks like `useAff` or
+-- | `useEffect`.
 usePrev :: forall b. Eq b => b -> Hook (UsePrev b) (Maybe b)
 usePrev value =
   coerceHook React.do
