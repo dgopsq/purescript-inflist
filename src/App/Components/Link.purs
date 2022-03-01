@@ -14,6 +14,10 @@ type Props
     , children :: Array JSX
     }
 
+-- | A `Link` component is just an anchor that
+-- | allows to navigate without refreshing the page
+-- | using the navigation interface from the application's
+-- | dependencies.
 mkLink :: AppComponent Props
 mkLink = do
   { router } <- ask

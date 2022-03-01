@@ -21,6 +21,12 @@ type Props
     , onDelete :: Todo -> Effect Unit
     }
 
+-- | A purely visual component rendering a Todo.
+-- | This will handle all the basic HTML events
+-- | that will be triggered while dealing with a single
+-- | Todo. This component should be used through the 
+-- | `ConnectedTodo` to have it synchronized with the
+-- | application's state and storage.
 mkTodo :: Effect (React.ReactComponent Props)
 mkTodo =
   memo do

@@ -24,6 +24,14 @@ import React.Basic.Hooks.Aff (useAff)
 type Props
   = { id :: TodoId }
 
+-- | A `ConnectedTodo` is a wrapper for te `Todo`
+-- | component that connects all the states and events
+-- | of a single Todo with the in-memory state and storage.
+-- |
+-- | This component will load the described Todo from the
+-- | storage if it's not present in the current state and
+-- | will handle the update behaviour after editing the
+-- | wrapped Todo.
 mkConnectedTodo :: AppComponent Props
 mkConnectedTodo = do
   { store, todosStorage, router } <- ask
@@ -49,7 +57,11 @@ mkConnectedTodo = do
     memoizedHandleUpdate <- useMemo unit \_ -> handleUpdate
     memoizedHandleOpen <- useMemo unit \_ -> handleOpen
     memoizedHandleDelete <- useMemo unit \_ -> handleDelete
-    -- Retrieve from the storage the missing todo
+    -- This  hook is used to retrieve the current Todo 
+    -- from the storage.
+    -- At the component's first render this hook
+    -- will be triggered synchronizing the in-memory
+    -- Todo with the stored one.
     retrievedTodo <-
       map isJust
         $ useAff id do
@@ -57,7 +69,11 @@ mkConnectedTodo = do
             case eitherRetrievedTodo of
               Right (Just retrievedTodo) -> liftEffect <<< dispatch $ loadTodo retrievedTodo
               _ -> pure unit
-    -- Update the todo into the storage.
+    -- Here the described Todo will be updated inside the storage
+    -- if, and only if there was a change.
+    -- Passing the `retrievedTodo` value as a dependency
+    -- and checking its truthness will assure that the hook
+    -- won't be triggered on the very first render.
     useAff (retrievedTodo /\ maybeTodo) do
       case (Tuple retrievedTodo maybeTodo) of
         (Tuple true (Just updatedTodo)) -> todosStorage.store updatedTodo.id updatedTodo

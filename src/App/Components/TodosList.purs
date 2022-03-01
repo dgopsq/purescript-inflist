@@ -12,6 +12,8 @@ import App.State.Todo (TodoId)
 type Props
   = { todos :: List TodoId }
 
+-- | A purely visual component rendering a list
+-- | of `ConnectedTodo` components.
 mkTodosList :: AppComponent Props
 mkTodosList = do
   connectedTodo <- mkConnectedTodo

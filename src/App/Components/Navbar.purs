@@ -11,6 +11,8 @@ import React.Basic.DOM as DOM
 type Props
   = { parentId :: TodoId }
 
+-- | A purely visual component rendering the 
+-- | application's top navbar.
 mkNavbar :: AppComponent Props
 mkNavbar = do
   layout <- lift mkLayout

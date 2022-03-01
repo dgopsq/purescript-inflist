@@ -11,6 +11,8 @@ type Props
     , onChange :: Boolean -> Effect Unit
     }
 
+-- | A purely visual component rendering a 
+-- | simple managed checkbox element.
 mkCheckbox :: Component Props
 mkCheckbox = do
   component "Checkbox" \{ checked, onChange } -> React.do

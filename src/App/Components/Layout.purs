@@ -8,6 +8,8 @@ import React.Basic.Hooks (Component, component)
 type Props
   = Array JSX
 
+-- | A purely visual component rendering the 
+-- | external layout of the application.
 mkLayout :: Component Props
 mkLayout =
   component "Layout" \children -> React.do
