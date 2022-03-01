@@ -36,10 +36,7 @@ useRouterContext ::
 useRouterContext routerContext = React.do
   maybeContextValue <- React.useContext routerContext
   pure case maybeContextValue of
-    -- If we have no context value from a provider, we throw a fatal error
-    Nothing ->
-      Partial.Unsafe.unsafeCrashWith
-        "useContext can only be used in a descendant of the corresponding context provider component"
+    Nothing -> Partial.Unsafe.unsafeCrashWith "The Provider component for the Router context is missing"
     Just contextValue -> contextValue
 
 -- | Create the Router provider component.
