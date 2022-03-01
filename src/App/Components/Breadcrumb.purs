@@ -21,11 +21,19 @@ type Props
 todoTextMaxLength :: Int
 todoTextMaxLength = 20
 
+-- | The Breadcrumb is a component that will render
+-- | the current visualized Todo and the path
+-- | to reach the top-level root Todo.
+-- | For performance reasons, this component won't 
+-- | display the full path from the root but a
+-- | compressed one.
 mkBreadcrumb :: AppComponent Props
 mkBreadcrumb = do
   { store } <- ask
   link <- mkLink
   let
+    -- This will render the root Todo as a
+    -- "home" icon with a link to the root ("/").
     renderRoot :: JSX
     renderRoot =
       link
@@ -38,6 +46,9 @@ mkBreadcrumb = do
             ]
         }
 
+    -- This will render a non-root Todo using
+    -- its text (cutted using the `sanitizeTodoText`
+    -- function) with a link to the relative page.
     renderTodo :: Todo -> JSX
     renderTodo todo =
       link
@@ -53,6 +64,10 @@ mkBreadcrumb = do
             ]
         }
 
+    -- This will render the "middle" section
+    -- of the Breadcrumb, or the compressed
+    -- part which will link at the "previous" Todo
+    -- or the "parent's parent".
     renderAggregated :: Todo -> JSX
     renderAggregated todo =
       link
@@ -68,6 +83,9 @@ mkBreadcrumb = do
             ]
         }
 
+    -- This will create the actual Breadcrumb
+    -- structure, taking into consideration the
+    -- current position in the nested structure.
     renderRootPath :: List Todo -> Array JSX
     renderRootPath path = case path of
       Cons _ Nil -> [ renderRoot ]
@@ -80,6 +98,9 @@ mkBreadcrumb = do
     breadcrumbItems <- useMemo partialRootPath \_ -> renderRootPath partialRootPath
     pure $ DOM.div { className: "flex flex-row items-center gap-1", children: breadcrumbItems }
 
+-- | Function used to generate a partial
+-- | or compressed path from the current Todo
+-- | to the top-level one.
 generatePartialRootPath :: Map TodoId Todo -> Todo -> List Todo
 generatePartialRootPath todosMap currentTodo = generatePartialRootPath' currentTodo Nil
   where
@@ -90,6 +111,8 @@ generatePartialRootPath todosMap currentTodo = generatePartialRootPath' currentT
       Just parentTodo -> generatePartialRootPath' parentTodo (snoc a c)
       _ -> snoc (snoc a c) rootTodo
 
+-- | Function used to "sanitize" a Todo text
+-- | to be used in the Breadcrumb.
 sanitizeTodoText :: String -> String
 sanitizeTodoText str
   | length str > todoTextMaxLength = take todoTextMaxLength str <> "..."

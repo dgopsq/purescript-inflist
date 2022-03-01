@@ -13,6 +13,8 @@ import React.Basic.Hooks as React
 type Props
   = { onAdd :: String -> Effect Unit }
 
+-- | A purely visual component rendering the 
+-- | text input used to create a new Todo.
 mkAddTodoInput :: Effect (React.ReactComponent Props)
 mkAddTodoInput =
   memo do
