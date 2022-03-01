@@ -15,7 +15,7 @@ data AppRoute
   = RootTodos
   | ChildrenTodos TodoId
 
--- | The parser used to match a string
+-- | The parser used to match a path
 -- | with a route from the `AppRoute` sum type.
 appRoute :: Match (Maybe AppRoute)
 appRoute =

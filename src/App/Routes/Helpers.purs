@@ -16,18 +16,20 @@ import App.Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appR
 import Routing.PushState (PushStateInterface)
 import Routing.PushState as PushState
 
--- | Initialize the Router context.
+-- | The application's router context.
 mkRouterContext :: Effect RouterContext
 mkRouterContext = React.createContext Nothing
 
--- | Create the Router object for the DI.
+-- | The `Router` data structure used
+-- | in the dependency injection.
 mkRouter :: Effect Router
 mkRouter = do
   routerContext <- mkRouterContext
   pure { routerContext }
 
 -- | Hook used to retrieve the Router context from
--- | a React component.
+-- | a React component. This must be nested inside
+-- | a provider serving the routing dependencies.
 useRouterContext ::
   RouterContext ->
   Hook (UseContext (Maybe RouterContextValue)) RouterContextValue
@@ -41,6 +43,10 @@ useRouterContext routerContext = React.do
     Just contextValue -> contextValue
 
 -- | Create the Router provider component.
+-- | This will initialize the navigation interface
+-- | and will provide a `route` state (which is
+-- | just a React state updated using the PushState
+-- | interface callback).
 mkRouterProvider :: AppComponent (Array JSX)
 mkRouterProvider = do
   { router } <- Reader.ask
@@ -55,6 +61,8 @@ mkRouterProvider = do
             setRoute newRoute
     pure (routerProvider (Just { nav, route }) children)
 
--- | ...
+-- | A navigation utility used to navigate toward
+-- | a specific route using the navigation
+-- | interface.
 navigateTo :: PushStateInterface -> String -> Effect Unit
 navigateTo nav route = nav.pushState (unsafeToForeign {}) route
