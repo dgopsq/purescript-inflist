@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "parcel serve src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html --public-url /inflist"
   },
   "devDependencies": {
     "parcel": "^2.2.1",
