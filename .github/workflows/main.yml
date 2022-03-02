@@ -9,7 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: ".node-version"
       - uses: purescript-contrib/setup-purescript@main
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache PureScript dependencies
         uses: actions/cache@v2
@@ -18,6 +29,11 @@ jobs:
           path: |
             .spago
             output
+
+      - name: Initialize Yarn and install dependencies
+        run: |
+          yarn config set cache-folder ~/.yarn
+          yarn
 
       - name: Build Purescript source
         run: spago build
