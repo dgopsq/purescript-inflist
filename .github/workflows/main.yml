@@ -1,0 +1,35 @@
+name: Main workflow
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: purescript-contrib/setup-purescript@main
+
+      - name: Cache PureScript dependencies
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-spago-${{ hashFiles('**/*.dhall') }}
+          path: |
+            .spago
+            output
+
+      - name: Build Purescript source
+        run: spago build
+
+      - name: Run tests
+        run: spago test --no-install
+
+      - name: Build application
+        run: yarn build
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
