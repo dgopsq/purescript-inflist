@@ -1,7 +1,7 @@
 module Test.App.State.TodosMapReducer where
 
 import Prelude
-import App.State.Todo (Todo, TodoId, rootTodoId)
+import App.State.Todo (Todo, TodoId, mkTodo, rootTodoId)
 import App.State.TodosMapReducer (TodosMapAction(..), TodosMapState, todosMapInitialState, todosMapReducer)
 import Data.Foldable (length)
 import Data.List (List(..), last)
@@ -20,13 +20,7 @@ todosMapReducerSpec = do
           newTodoId = "id"
 
           newTodo :: Todo
-          newTodo =
-            { id: newTodoId
-            , text: "text"
-            , checked: false
-            , parent: rootTodoId
-            , children: Nil
-            }
+          newTodo = mkTodo rootTodoId newTodoId "text" false
 
           updatedState :: TodosMapState
           updatedState = todosMapReducer todosMapInitialState (AddTodo newTodo)
@@ -35,9 +29,7 @@ todosMapReducerSpec = do
           updatedRoot = lookup rootTodoId updatedState
 
           updatedRootChildren :: List TodoId
-          updatedRootChildren =
-            fromMaybe Nil
-              $ map (\t -> t.children) updatedRoot
+          updatedRootChildren = fromMaybe Nil $ map _.children updatedRoot
         length (values updatedState) `shouldEqual` 2
         length updatedRootChildren `shouldEqual` 1
-        last updatedRootChildren `shouldEqual` (Just newTodoId)
+        last updatedRootChildren `shouldEqual` Just newTodoId
