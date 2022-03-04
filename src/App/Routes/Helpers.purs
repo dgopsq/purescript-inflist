@@ -45,7 +45,7 @@ useRouterContext routerContext = React.do
 -- | just a React state updated using the PushState
 -- | interface callback).
 mkRouterProvider :: Maybe String -> AppComponent (Array JSX)
-mkRouterProvider maybePathPrefix = do
+mkRouterProvider maybeRootDir = do
   { router } <- Reader.ask
   nav <- liftEffect PushState.makeInterface
   appComponent "Router" \children -> React.do
@@ -54,7 +54,7 @@ mkRouterProvider maybePathPrefix = do
     route /\ setRoute <- React.useState' (Just RootTodos)
     React.useEffectOnce do
       nav
-        # PushState.matches (mkAppRoute maybePathPrefix) \_ newRoute -> do
+        # PushState.matches (mkAppRoute maybeRootDir) \_ newRoute -> do
             setRoute newRoute
     pure (routerProvider (Just { nav, route }) children)
 

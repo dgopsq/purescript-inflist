@@ -21,6 +21,7 @@ to generate this file without the comments in this block.
   , "exceptions"
   , "foldable-traversable"
   , "foreign"
+  , "functions"
   , "js-timers"
   , "lists"
   , "maybe"

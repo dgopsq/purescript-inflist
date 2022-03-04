@@ -27,7 +27,7 @@ instance showAppRoute :: Show AppRoute where
 -- | The parser used to match a path
 -- | with a route from the `AppRoute` sum type.
 mkAppRoute :: Maybe String -> Match (Maybe AppRoute)
-mkAppRoute maybePathPrefix =
+mkAppRoute maybeRootDir =
   Foldable.oneOf
     [ Just <$> routes
     , pure Nothing
@@ -37,7 +37,7 @@ mkAppRoute maybePathPrefix =
     ( fromMaybe Match.root
         $ map
             (\path -> Match.root *> Match.lit path)
-            maybePathPrefix
+            maybeRootDir
     )
       *> Foldable.oneOf
           [ ChildrenTodos <$> Match.str

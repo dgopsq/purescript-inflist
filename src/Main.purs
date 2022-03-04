@@ -2,6 +2,7 @@ module Main where
 
 import Prelude
 import App.Api.Storage.LocalStorage (localTodosStorage)
+import App.Foreign.EnvConfig (getRootDir)
 import App.Pages.NotFoundPage (mkNotFoundPage)
 import App.Pages.TodosListPage (mkTodosListPage)
 import App.Routes (AppRoute(..))
@@ -41,7 +42,7 @@ main = do
         todosStorage = localTodosStorage
 
         env = { router, store, todosStorage }
-      routerProvider <- runReaderT (mkRouterProvider Nothing) env
+      routerProvider <- runReaderT (mkRouterProvider getRootDir) env
       storeProvider <- runReaderT (mkStoreProvider rootInitialState rootReducer) env
       app <- runReaderT mkApp env
       render (routerProvider [ storeProvider [ app unit ] ]) r
