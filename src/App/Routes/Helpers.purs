@@ -65,4 +65,6 @@ mkRouterProvider maybeRootDir = do
 navigateTo :: PushStateInterface -> String -> Effect Unit
 navigateTo nav route = nav.pushState (unsafeToForeign {}) computedRoute
   where
-  computedRoute = (fromMaybe "" getRootDir) <> route
+  rootDir = fromMaybe "" $ map ("/" <> _) getRootDir
+
+  computedRoute = rootDir <> route
