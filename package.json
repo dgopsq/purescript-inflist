@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel serve src/index.html",
-    "build": "parcel build src/index.html --public-url /inflist"
+    "dev": "parcel serve src/*.html",
+    "build": "parcel build src/*.html --public-url /inflist"
   },
   "devDependencies": {
     "parcel": "^2.2.1",
