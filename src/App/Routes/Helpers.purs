@@ -1,10 +1,11 @@
 module App.Routes.Helpers where
 
 import Prelude
+import App.Foreign.EnvConfig (getRootDir)
 import App.Routes (AppRoute(..), Router, RouterContext, RouterContextValue, mkAppRoute)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader as Reader
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromMaybe)
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import Foreign (unsafeToForeign)
@@ -62,4 +63,6 @@ mkRouterProvider maybeRootDir = do
 -- | a specific route using the navigation
 -- | interface.
 navigateTo :: PushStateInterface -> String -> Effect Unit
-navigateTo nav route = nav.pushState (unsafeToForeign {}) route
+navigateTo nav route = nav.pushState (unsafeToForeign {}) computedRoute
+  where
+  computedRoute = (fromMaybe "" getRootDir) <> route
