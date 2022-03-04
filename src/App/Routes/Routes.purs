@@ -3,7 +3,9 @@ module App.Routes where
 import Prelude
 import App.State.Todo (TodoId)
 import Data.Foldable as Foldable
-import Data.Maybe (Maybe(..))
+import Data.Generic.Rep (class Generic)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Show.Generic (genericShow)
 import React.Basic (ReactContext)
 import Routing.Match (Match)
 import Routing.Match as Match
@@ -15,17 +17,28 @@ data AppRoute
   = RootTodos
   | ChildrenTodos TodoId
 
+derive instance genericAppRoute :: Generic AppRoute _
+
+derive instance eqAppRoute :: Eq AppRoute
+
+instance showAppRoute :: Show AppRoute where
+  show = genericShow
+
 -- | The parser used to match a path
 -- | with a route from the `AppRoute` sum type.
-appRoute :: Match (Maybe AppRoute)
-appRoute =
+mkAppRoute :: Maybe String -> Match (Maybe AppRoute)
+mkAppRoute maybePathPrefix =
   Foldable.oneOf
     [ Just <$> routes
     , pure Nothing
     ]
   where
   routes =
-    Match.root
+    ( fromMaybe Match.root
+        $ map
+            (\path -> Match.root *> Match.lit path)
+            maybePathPrefix
+    )
       *> Foldable.oneOf
           [ ChildrenTodos <$> Match.str
           , pure RootTodos

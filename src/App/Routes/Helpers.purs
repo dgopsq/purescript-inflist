@@ -1,6 +1,7 @@
 module App.Routes.Helpers where
 
 import Prelude
+import App.Routes (AppRoute(..), Router, RouterContext, RouterContextValue, mkAppRoute)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader as Reader
 import Data.Maybe (Maybe(..))
@@ -12,7 +13,6 @@ import React.Basic (JSX)
 import React.Basic as React.Basic
 import React.Basic.Hooks (Hook, UseContext, (/\))
 import React.Basic.Hooks as React
-import App.Routes (AppRoute(..), Router, RouterContext, RouterContextValue, appRoute)
 import Routing.PushState (PushStateInterface)
 import Routing.PushState as PushState
 
@@ -44,8 +44,8 @@ useRouterContext routerContext = React.do
 -- | and will provide a `route` state (which is
 -- | just a React state updated using the PushState
 -- | interface callback).
-mkRouterProvider :: AppComponent (Array JSX)
-mkRouterProvider = do
+mkRouterProvider :: Maybe String -> AppComponent (Array JSX)
+mkRouterProvider maybePathPrefix = do
   { router } <- Reader.ask
   nav <- liftEffect PushState.makeInterface
   appComponent "Router" \children -> React.do
@@ -54,7 +54,7 @@ mkRouterProvider = do
     route /\ setRoute <- React.useState' (Just RootTodos)
     React.useEffectOnce do
       nav
-        # PushState.matches appRoute \_ newRoute -> do
+        # PushState.matches (mkAppRoute maybePathPrefix) \_ newRoute -> do
             setRoute newRoute
     pure (routerProvider (Just { nav, route }) children)
 

@@ -4,6 +4,12 @@ import Prelude
 import App.Api.Storage.LocalStorage (localTodosStorage)
 import App.Pages.NotFoundPage (mkNotFoundPage)
 import App.Pages.TodosListPage (mkTodosListPage)
+import App.Routes (AppRoute(..))
+import App.Routes.Helpers (mkRouter, mkRouterProvider, useRouterContext)
+import App.State.Helpers (mkStoreProvider)
+import App.State.RootReducer (rootInitialState, rootReducer)
+import App.State.Store (mkStore)
+import App.State.Todo (rootTodoId)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, runReaderT)
 import Data.Maybe (Maybe(..))
@@ -12,12 +18,6 @@ import Effect.Exception (throw)
 import React.Basic.DOM (render)
 import React.Basic.Hooks (fragment)
 import React.Basic.Hooks as React
-import App.Routes (AppRoute(..))
-import App.Routes.Helpers (mkRouter, mkRouterProvider, useRouterContext)
-import App.State.Helpers (mkStoreProvider)
-import App.State.RootReducer (rootInitialState, rootReducer)
-import App.State.Store (mkStore)
-import App.State.Todo (rootTodoId)
 import Web.DOM.NonElementParentNode (getElementById)
 import Web.HTML (window)
 import Web.HTML.HTMLDocument (toNonElementParentNode)
@@ -41,7 +41,7 @@ main = do
         todosStorage = localTodosStorage
 
         env = { router, store, todosStorage }
-      routerProvider <- runReaderT mkRouterProvider env
+      routerProvider <- runReaderT (mkRouterProvider Nothing) env
       storeProvider <- runReaderT (mkStoreProvider rootInitialState rootReducer) env
       app <- runReaderT mkApp env
       render (routerProvider [ storeProvider [ app unit ] ]) r
