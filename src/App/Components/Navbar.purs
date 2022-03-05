@@ -20,7 +20,7 @@ mkNavbar = do
   appComponent "Navbar" \_ -> React.do
     pure
       $ DOM.div
-          { className: "py-5 bg-white border-b border-indigo-100"
+          { className: "pt-20"
           , children:
               [ layout
                   [ DOM.div
@@ -31,8 +31,8 @@ mkNavbar = do
                                   { route: "/"
                                   , children:
                                       [ DOM.span
-                                          { className: "text-xl tracking-wide uppercase font-black text-indigo-600"
-                                          , children: [ DOM.text "♾ Inflist" ]
+                                          { className: "text-5xl tracking-wide font-black text-black"
+                                          , children: [ DOM.text "♾ inflist" ]
                                           }
                                       ]
                                   }

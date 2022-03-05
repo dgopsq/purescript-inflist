@@ -52,7 +52,7 @@ mkTodo =
             DOM.a
               { href: "#"
               , onClick: handler_ $ onOpen todo
-              , children: [ DOM.i { className: "gg-external gg-normal text-indigo-500", children: [] } ]
+              , children: [ DOM.i { className: "gg-external gg-normal text-black-500", children: [] } ]
               }
       useEffect debouncedTodoText do
         onChange (todo { text = todoText })
@@ -62,7 +62,7 @@ mkTodo =
         pure mempty
       pure
         $ DOM.div
-            { className: "bg-white border border-indigo-100 py-3 px-5 rounded flex flex-row gap-x-3 items-center"
+            { className: "bg-gray-100 py-3 px-5 rounded-lg flex flex-row gap-x-3 items-center"
             , children:
                 [ DOM.div
                     { className: "basis-auto grow-0 shrink-0 flex items-center"
@@ -81,7 +81,7 @@ mkTodo =
                             { className: "basis-full grow shrink"
                             , children:
                                 [ DOM.input
-                                    { className: "w-full outline-indigo-300"
+                                    { className: "w-full bg-transparent outline-black"
                                     , type: "text"
                                     , value: todoText
                                     , onChange:

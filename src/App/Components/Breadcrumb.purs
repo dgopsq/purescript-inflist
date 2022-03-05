@@ -40,7 +40,7 @@ mkBreadcrumb = do
         { route: "/"
         , children:
             [ DOM.span
-                { className: "text-indigo-500 text-sm flex flex-row"
+                { className: "text-black text-sm flex flex-row"
                 , children: [ DOM.i { className: "gg-home gg-small", children: [] } ]
                 }
             ]
@@ -55,9 +55,9 @@ mkBreadcrumb = do
         { route: "/" <> todo.id
         , children:
             [ DOM.span
-                { className: "text-indigo-500 text-sm flex flex-row gap-1"
+                { className: "text-black text-sm flex flex-row gap-1"
                 , children:
-                    [ DOM.i { className: "text-indigo-200 gg-chevron-double-right gg-small", children: [] }
+                    [ DOM.i { className: "text-gray-200 gg-chevron-double-right gg-small", children: [] }
                     , DOM.text $ sanitizeTodoText todo.text
                     ]
                 }

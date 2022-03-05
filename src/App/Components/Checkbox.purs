@@ -18,7 +18,7 @@ mkCheckbox = do
   component "Checkbox" \{ checked, onChange } -> React.do
     pure
       $ DOM.input
-          { className: "appearance-none checked:bg-indigo-500 bg-indigo-200 w-4 h-4 rounded cursor-pointer outline-indigo-300"
+          { className: "appearance-none checked:bg-black bg-gray-300 w-4 h-4 rounded cursor-pointer outline-indigo-300"
           , type: "checkbox"
           , checked
           , onChange: mkEffectFn1 \_ -> onChange $ not checked
