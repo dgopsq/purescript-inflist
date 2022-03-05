@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@mantine/hooks": "^3.6.9",
+    "css.gg": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "scheduler": "^0.20.2",

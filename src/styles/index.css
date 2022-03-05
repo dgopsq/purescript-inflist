@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "../../node_modules/css.gg/icons/css/home.css";
+@import "../../node_modules/css.gg/icons/css/external.css";
+@import "../../node_modules/css.gg/icons/css/chevron-double-right.css";
