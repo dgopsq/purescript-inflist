@@ -7,9 +7,12 @@
     "build": "parcel build src/*.html --public-url /inflist"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.2",
     "parcel": "^2.2.1",
+    "postcss": "^8.4.7",
     "purescript": "^0.14.5",
-    "spago": "^0.20.3"
+    "spago": "^0.20.3",
+    "tailwindcss": "^3.0.23"
   },
   "dependencies": {
     "@mantine/hooks": "^3.6.9",
