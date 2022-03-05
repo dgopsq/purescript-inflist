@@ -5,3 +5,27 @@
 @import "../../node_modules/css.gg/icons/css/home.css";
 @import "../../node_modules/css.gg/icons/css/external.css";
 @import "../../node_modules/css.gg/icons/css/chevron-double-right.css";
+@import "../../node_modules/css.gg/icons/css/check.css";
+
+/* Custom styles */
+
+input.c-checkbox:checked + label i {
+  @apply block;
+}
+
+input.c-checkbox:not(:checked) + label i {
+  @apply hidden;
+}
+
+.gg-small {
+  --ggs: 0.7;
+}
+
+.gg-normal {
+  --ggs: 0.8;
+}
+
+.gg-check-fix:after {
+  top: -2px;
+  left: 3px;
+}

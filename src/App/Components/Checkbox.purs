@@ -7,7 +7,8 @@ import React.Basic.DOM as DOM
 import React.Basic.Hooks (Component, component)
 
 type Props
-  = { checked :: Boolean
+  = { id :: String
+    , checked :: Boolean
     , onChange :: Boolean -> Effect Unit
     }
 
@@ -15,11 +16,24 @@ type Props
 -- | simple managed checkbox element.
 mkCheckbox :: Component Props
 mkCheckbox = do
-  component "Checkbox" \{ checked, onChange } -> React.do
+  component "Checkbox" \{ id, checked, onChange } -> React.do
     pure
-      $ DOM.input
-          { className: "appearance-none checked:bg-black bg-gray-300 w-4 h-4 rounded cursor-pointer outline-indigo-300"
-          , type: "checkbox"
-          , checked
-          , onChange: mkEffectFn1 \_ -> onChange $ not checked
-          }
+      $ DOM.div_
+          [ DOM.input
+              { className: "opacity-0 absolute c-checkbox"
+              , type: "checkbox"
+              , checked
+              , onChange: mkEffectFn1 \_ -> onChange $ not checked
+              , id
+              }
+          , DOM.label
+              { className: "rounded-md block bg-gray-300 w-5 h-5 cursor-pointer"
+              , htmlFor: id
+              , children:
+                  [ DOM.i
+                      { className: "hidden bg-black w-full h-full rounded-md gg-check gg-check-fix"
+                      , children: []
+                      }
+                  ]
+              }
+          ]

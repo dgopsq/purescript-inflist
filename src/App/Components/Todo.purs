@@ -68,7 +68,8 @@ mkTodo =
                     { className: "basis-auto grow-0 shrink-0 flex items-center"
                     , children:
                         [ checkbox
-                            { checked: todo.checked
+                            { id: todo.id
+                            , checked: todo.checked
                             , onChange: handleChangeStatus
                             }
                         ]
