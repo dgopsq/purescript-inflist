@@ -24,7 +24,7 @@ mkNavbar = do
           , children:
               [ layout
                   [ DOM.div
-                      { className: "flex flex-row justify"
+                      { className: "flex flex-row justify-between items-center"
                       , children:
                           [ DOM.div_
                               [ link
@@ -34,6 +34,21 @@ mkNavbar = do
                                           { className: "text-5xl tracking-wide font-black text-black"
                                           , children: [ DOM.text "♾ inflist" ]
                                           }
+                                      ]
+                                  }
+                              ]
+                          , DOM.div_
+                              [ DOM.a
+                                  { className: "text-black flex items-center"
+                                  , href: "https://github.com/dgopsq/inflist"
+                                  , target: "_blank"
+                                  , rel: "noopener"
+                                  , children:
+                                      [ DOM.i
+                                          { className: "gg-code-slash gg-small mr-4"
+                                          , children: []
+                                          }
+                                      , DOM.text "GitHub"
                                       ]
                                   }
                               ]
