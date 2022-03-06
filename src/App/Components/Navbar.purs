@@ -3,9 +3,11 @@ module App.Components.Navbar where
 import Prelude
 import App.Components.Layout (mkLayout)
 import App.Components.Link (mkLink)
+import App.Foreign.Images (getLogoImage)
 import App.State.Todo (TodoId)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Trans.Class (lift)
+import Data.Maybe (fromMaybe)
 import React.Basic.DOM as DOM
 
 type Props
@@ -31,8 +33,18 @@ mkNavbar = do
                                   { route: "/"
                                   , children:
                                       [ DOM.span
-                                          { className: "text-2xl md:text-3xl lg:text-5xl tracking-wide font-black text-black"
-                                          , children: [ DOM.text "♾️ inflist" ]
+                                          { className: "flex items-center"
+                                          , children:
+                                              [ DOM.img
+                                                  { className: "h-6 md:h-8 lg:h-10"
+                                                  , src: fromMaybe "" getLogoImage
+                                                  , alt: "Logo"
+                                                  }
+                                              , DOM.span
+                                                  { className: "text-2xl md:text-3xl lg:text-5xl tracking-wide font-black text-black pl-4"
+                                                  , children: [ DOM.text "inflist" ]
+                                                  }
+                                              ]
                                           }
                                       ]
                                   }

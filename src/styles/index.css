@@ -14,19 +14,19 @@
 @font-face {
   font-family: "Heebo";
   font-weight: 400;
-  src: url("./fonts/Heebo-Regular.ttf");
+  src: url("../assets/fonts/Heebo-Regular.ttf");
 }
 
 @font-face {
   font-family: "Heebo";
   font-weight: 700;
-  src: url("./fonts/Heebo-Bold.ttf");
+  src: url("../assets/fonts/Heebo-Bold.ttf");
 }
 
 @font-face {
   font-family: "Heebo";
   font-weight: 900;
-  src: url("./fonts/Heebo-Black.ttf");
+  src: url("../assets/fonts/Heebo-Black.ttf");
 }
 
 /* Custom styles */
