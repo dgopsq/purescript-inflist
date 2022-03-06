@@ -2,6 +2,9 @@
 
 Inflist is a infinitely nestable todo list written in [PureScript](https://www.purescript.org/). It's an **excercise** and an **experiment** to better understand the interoperability between **PureScript** and [React](https://reactjs.org/).
 
+> **N.B:** I'm still learning PureScript so *there will be* errors 🤓.
+> Any correction / improvement is *highly* appreciated!
+
 ## Introduction
 
 ### Architecture
