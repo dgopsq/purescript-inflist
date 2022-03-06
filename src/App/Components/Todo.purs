@@ -86,7 +86,7 @@ mkTodo =
                                 ]
                             }
                         , DOM.div
-                            { className: "basis-auto grow-0 shrink-0"
+                            { className: "basis-auto grow-0 shrink-0 flex items-center"
                             , children: [ rightIcon ]
                             }
                         ]
