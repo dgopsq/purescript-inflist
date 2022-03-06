@@ -7,11 +7,10 @@ import App.Misc.Hook.UseDebouncedEffect (useDebounce)
 import App.State.Todo (Todo)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
-import Effect.Console (log)
 import React.Basic.DOM as DOM
 import React.Basic.DOM.Events (targetValue)
 import React.Basic.Events (handler, handler_)
-import React.Basic.Hooks (JSX, memo, useEffect, useEffectAlways, useState, (/\))
+import React.Basic.Hooks (JSX, memo, useEffect, useState, (/\))
 import React.Basic.Hooks as React
 
 type Props
@@ -54,9 +53,6 @@ mkTodo =
               }
       useEffect debouncedTodoText do
         onChange (todo { text = todoText })
-        pure mempty
-      useEffectAlways do
-        _ <- log $ "Rerended todo" <> (show todo.id)
         pure mempty
       pure
         $ DOM.div
