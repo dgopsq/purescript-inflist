@@ -32,7 +32,7 @@ mkNavbar = do
                                   , children:
                                       [ DOM.span
                                           { className: "text-2xl md:text-3xl lg:text-5xl tracking-wide font-black text-black"
-                                          , children: [ DOM.text "♾ inflist" ]
+                                          , children: [ DOM.text "♾️ inflist" ]
                                           }
                                       ]
                                   }
