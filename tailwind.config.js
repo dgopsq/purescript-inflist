@@ -1,7 +1,11 @@
 module.exports = {
   content: ["./src/**/*.html", "./output/App.**/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Heebo", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

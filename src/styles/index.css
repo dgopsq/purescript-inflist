@@ -9,6 +9,26 @@
 @import "../../node_modules/css.gg/icons/css/code-slash.css";
 @import "../../node_modules/css.gg/icons/css/trash.css";
 
+/* Custom fonts */
+
+@font-face {
+  font-family: "Heebo";
+  font-weight: 400;
+  src: url("./fonts/Heebo-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Heebo";
+  font-weight: 700;
+  src: url("./fonts/Heebo-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Heebo";
+  font-weight: 900;
+  src: url("./fonts/Heebo-Black.ttf");
+}
+
 /* Custom styles */
 
 input.c-checkbox:checked + label i {
