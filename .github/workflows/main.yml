@@ -38,11 +38,8 @@ jobs:
           yarn config set cache-folder ~/.yarn
           yarn
 
-      - name: Build Purescript source
-        run: spago build
-
       - name: Run tests
-        run: spago test --no-install
+        run: yarn test
 
       - name: Build application
         run: yarn build

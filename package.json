@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "parcel serve src/*.html",
-    "build": "parcel build src/*.html --public-url /inflist"
+    "test": "spago test --no-install",
+    "build": "spago build && parcel build src/*.html --public-url /inflist",
+    "build-cf": "spago build && parcel build src/*.html"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
