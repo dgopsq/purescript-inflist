@@ -43,15 +43,13 @@ mkTodo =
         rightIcon :: JSX
         rightIcon = case isEditing of
           true ->
-            DOM.a
-              { href: "#"
-              , onClick: handler_ $ onDelete todo
+            DOM.button
+              { onClick: handler_ $ onDelete todo
               , children: [ DOM.i { className: "gg-trash gg-normal text-rose-500", children: [] } ]
               }
           false ->
-            DOM.a
-              { href: "#"
-              , onClick: handler_ $ onOpen todo
+            DOM.button
+              { onClick: handler_ $ onOpen todo
               , children: [ DOM.i { className: "gg-external gg-normal text-black-500", children: [] } ]
               }
       useEffect debouncedTodoText do
