@@ -1,4 +1,4 @@
-# ♾️ inflist
+![logo](https://raw.githubusercontent.com/dgopsq/inflist/master/src/assets/images/social.png)
 
 Inflist is a infinitely nestable todo list written in [PureScript](https://www.purescript.org/). It's an **excercise** and an **experiment** to better understand the interoperability between **PureScript** and [React](https://reactjs.org/).
 
