@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "parcel serve src/*.html",
     "test": "spago test --no-install",
-    "build": "spago build && parcel build src/*.html --public-url /inflist",
-    "build-cf": "spago build && parcel build src/*.html"
+    "build": "spago build && parcel build src/*.html --public-url /inflist"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
