@@ -28,13 +28,14 @@ type Todo
   = { id :: TodoId
     , checked :: Boolean
     , text :: String
+    , note :: String
     , children :: List TodoId
     , parent :: TodoId
     }
 
 -- | Helper function used to create a Todo.
 mkTodo :: TodoId -> TodoId -> String -> Boolean -> Todo
-mkTodo parentId id text checked = { id, text, checked, parent: parentId, children }
+mkTodo parentId id text checked = { id, text, note: "", checked, parent: parentId, children }
   where
   children = Nil
 

@@ -31,14 +31,6 @@
 
 /* Custom styles */
 
-input.c-checkbox:checked + label i {
-  @apply block;
-}
-
-input.c-checkbox:not(:checked) + label i {
-  @apply hidden;
-}
-
 .gg-small {
   --ggs: 0.7;
 }

@@ -5,12 +5,13 @@ import App.Components.AddTodoInput (mkAddTodoInput)
 import App.Components.Breadcrumb (mkBreadcrumb)
 import App.Components.Layout (mkLayout)
 import App.Components.Navbar (mkNavbar)
+import App.Components.SingleTodoHeader (mkSingleTodoHeader)
 import App.Components.TodosList (mkTodosList)
 import App.Misc.Hook.UsePrev (usePrev)
 import App.State.Helpers (useSelector)
 import App.State.Selectors (todosMapSelector)
-import App.State.Todo (TodoId, genUniqTodo, rootTodoId)
-import App.State.TodosMapReducer (addTodo, loadTodo)
+import App.State.Todo (Todo, TodoId, genUniqTodo, rootTodoId)
+import App.State.TodosMapReducer (addTodo, loadTodo, updateTodo)
 import AppComponent (AppComponent, appComponent)
 import Control.Monad.Reader (ask, lift)
 import Data.Either (Either(..))
@@ -40,6 +41,7 @@ mkTodosListPage = do
   layout <- lift mkLayout
   navbar <- mkNavbar
   breadcrumb <- mkBreadcrumb
+  singleTodoHeader <- lift mkSingleTodoHeader
   appComponent "TodosListPage" \{ parentId } -> React.do
     todosMapState <- useSelector store.stateContext todosMapSelector
     dispatch <- useContext store.dispatchContext
@@ -51,11 +53,22 @@ mkTodosListPage = do
         newTodo <- genUniqTodo parentId text false
         dispatch $ addTodo newTodo
 
+      handleUpdate :: Todo -> Effect Unit
+      handleUpdate updatedTodo = dispatch $ updateTodo updatedTodo.id updatedTodo
+
       showedTodos = fromMaybe Nil $ map _.children maybeParent
 
       renderBreadcrumb = case (Tuple (parentId /= rootTodoId) maybeParent) of
         (Tuple true (Just currentTodo)) -> breadcrumb { currentTodo }
         _ -> DOM.div_ []
+
+      renderHeader = case maybeParent of
+        Just parent ->
+          if parent.id /= rootTodoId then
+            singleTodoHeader { todo: parent, onChange: handleUpdate }
+          else
+            DOM.div_ []
+        Nothing -> DOM.div_ []
     prevMaybeParent <- fromMaybe Nothing <$> usePrev maybeParent
     -- This  hook is used to retrieve the parent
     -- Todo from the storage.
@@ -109,7 +122,11 @@ mkTodosListPage = do
                               [ renderBreadcrumb ]
                           }
                       , DOM.div
-                          { className: "mt-4"
+                          { className: "mt-6"
+                          , children: [ renderHeader ]
+                          }
+                      , DOM.div
+                          { className: "mt-8"
                           , children:
                               [ React.element addTodoInput { onAdd: handleAdd }
                               ]
